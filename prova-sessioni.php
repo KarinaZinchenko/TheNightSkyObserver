@@ -22,6 +22,10 @@ if(isset($_SESSION["autenticato"]))
             echo "&nbsp; &nbsp; <a href='inserisciOculare.php'>Inserisci Oculare </a>";
             echo "&nbsp; &nbsp; <a href='inserisciFiltro.php'>Inserisci Filtro/Altro </a>";
             echo "&nbsp; &nbsp; <a href='inserisciOggettoCeleste.php'>Inserisci Oggetto Celeste </a>";
+	    echo "&nbsp; &nbsp; <a href='inserisciArea.php'>Inserisci Sito Osservativo </a>";
+	    echo "&nbsp; &nbsp; <a href='inserisciStrumento.php'>Inserisci Strumento </a>";
+	    echo "&nbsp; &nbsp; <a href='modificaEliminaStrumento.php'>Modifica/Elimina Strumento</a>";
+	    echo "&nbsp; &nbsp; <a href='modificaEliminaStrumentoEffettivo.php'>Modifica/Elimina Strumento Effettivo </a>";
         }
          else
            echo "utente insolvente";	
@@ -43,4 +47,4 @@ else
 }
 
 
-?>
+?>
