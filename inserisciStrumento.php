@@ -7,36 +7,102 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         ?>
         <html>
         <head>
-          <title>Inserimento nuovo sito osservativo </title>
-         </head>
-         <body>
-           <center>
-             <h1>Inserisci i dati del sito osservativo in questione:</h1>  <br><br>
-             <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
-               Nome: <input type="text" name="nome"><br><br>
-               Note: <input type="text" name="note"><br><br>
-               Tipo: <input type="text" name="tipo"><br><br>
-               Marca: <input type="text" name="marca"><br><br>
-               Disponibilit&agrave;: <input type="text" name="disponibilita"><br><br>
-               Apertura: <input type="text" name="apertura"><br><br>
-               Campo focale: <input type="text" name="campoFocale"><br><br>
-               Ingrandimenti: <input type="text" name="ingrandimenti"><br><br>
-               Lunghezza focale: <input type="text" name="lunghezzaFocale"><br><br>
-               Montatura: <input type="text" name="montatura"><br><br>
-               Focal Ratio: <input type="text" name="focalRatio"><br><br>
-               Campo del cercatore: <input type="text" name="campoCercatore"><br><br>
-               Tipo di telescopio: <input type="text" name="tipoTelescopio"><br><br>
-               Apertura (in millimetri): <input type="text" name="aperturaMillimetri"><br><br>
-               Apertura (in pollici): <input type="text" name="aperturaPollici"><br><br>
-               Risoluzione angolare: <input type="text" name="risoluzioneAngolare"><br><br>
-               Stima potere risolutivo: <input type="text" name="stimaPotereRisolutivo"><br><br>
-                 <input type="submit" name="invio" value="inserisci">
-             </form>
-           </center>
-         </body>
-         </html>
+          <title>Inserimento nuovo strumento</title>
+          <script type="text/javascript" language="javascript">
+            /* Codice abbastanza brutto */
+            function mostraCampi(x) {
+              if (x.value == "Binocolo") {
+                document.getElementById("formCampoFocale").style.display = "none";
+                document.getElementById("formLunghezzaFocale").style.display = "none";
+                document.getElementById("formMontatura").style.display = "none";
+                document.getElementById("formCampoCercatore").style.display = "none";
+                document.getElementById("formMontatura").style.display = "none";
+                document.getElementById("formTipoTelescopio").style.display = "none";
+                document.getElementById("formAperturaPollici").style.display = "none";
+                document.getElementById("formFocalRatio").style.display = "none";
+                document.getElementById("formRisoluzioneAngolare").style.display = "none";
+                document.getElementById("formStimaPotereRisolutivo").style.display = "none";
+              } else {
+                document.getElementById("formCampoFocale").style.display = "block";
+                document.getElementById("formLunghezzaFocale").style.display = "block";
+                document.getElementById("formMontatura").style.display = "block";
+                document.getElementById("formCampoCercatore").style.display = "block";
+                document.getElementById("formMontatura").style.display = "block";
+                document.getElementById("formTipoTelescopio").style.display = "block";
+                document.getElementById("formAperturaPollici").style.display = "block";
+                document.getElementById("formFocalRatio").style.display = "block";
+                document.getElementById("formRisoluzioneAngolare").style.display = "block";
+                document.getElementById("formStimaPotereRisolutivo").style.display = "block";
+              }
+            }
+
+            function calcolaFocalRatio() {
+              lunghezzaFocale = document.getElementsByName("lunghezzaFocale")[0].value;
+              aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
+              campoFocalRatio = document.getElementsByName("focalRatio")[0];
+              if (aperturaMillimetri != 0) {
+                focalRatio = lunghezzaFocale/aperturaMillimetri;
+                campoFocalRatio.value = focalRatio;
+              } else {
+                campoFocalRatio.value = "Apertura deve essere diverso da zero!";
+              }
+            }
+
+            function calcolaStimaPotereRisolutivoI() {
+              aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
+              campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
+              campoStimaPotereRisolutivo.value = 3.7 + 2.5 * Math.log(Math.pow(aperturaMillimetri, 2));
+            }
+
+            function calcolaStimaPotereRisolutivoII() {
+              aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
+              campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
+              campoStimaPotereRisolutivo.value = 9.5 + 5 * Math.log(Math.pow(aperturaPollici, 2));
+            }
+
+            function calcolaRisoluzioneAngolare() {
+              aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
+              campoRisoluzioneAngolare = document.getElementsByName("risoluzioneAngolare")[0];
+              campoRisoluzioneAngolare.value = 4.56/aperturaPollici;
+            }
+          </script>
+        </head>
+        <body>
+          <center>
+            <h1>Inserisci i dati dello strumento in questione:</h1>  <br><br>
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
+              <p id="formNome">Nome: <input type="text" name="nome"></p>
+              <p id="formNote">Note: <input type="text" name="note"></p>
+              <p id="formTipo">Tipo: <select name="tipo" onchange="mostraCampi(this)">
+                <option value="Telescopio">Telescopio</option>
+                <option value="Binocolo">Binocolo</option>
+              </select></p>
+              <p id="formMarca">Marca: <input type="text" name="marca"></p>
+              <p id="formDisponibilita">Disponibilit&agrave;: <input type="text" name="disponibilita"></p>
+              <p id="formApertura">Apertura: <input type="text" name="apertura"></p>
+              <p id="formCampoFocale">Campo focale: <input type="text" name="campoFocale"></p>
+              <p id="formIngrandimenti">Ingrandimenti: <input type="text" name="ingrandimenti"></p>
+              <p id="formLunghezzaFocale">Lunghezza focale: <input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()"></p>
+              <p id="formMontatura">Montatura: <input type="text" name="montatura"></p>
+              <p id="formCampoCercatore">Campo del cercatore: <input type="text" name="campoCercatore"></p>
+              <p id="formTipoTelescopio">Tipo di telescopio: <select name="tipoTelescopio">
+                <option value="Rifrattore">Rifrattore</option>
+                <option value="Riflettore">Riflettore</option>
+                <option value="Catadiottrico">Catadiottrico</option>
+                <option value="Altro">Altro</option>
+              </select></p>
+              <p id="formAperturaMillimetri">Apertura (in millimetri): <input type="text" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()"></p>
+              <p id="formAperturaPollici">Apertura (in pollici): <input type="text" name="aperturaPollici" oninput="calcolaRisoluzioneAngolare()"></p>
+              <p id="formFocalRatio">Focal Ratio: <input type="text" name="focalRatio" readonly></p>
+              <p id="formRisoluzioneAngolare">Risoluzione angolare: <input type="text" name="risoluzioneAngolare" readonly></p>
+              <p id="formStimaPotereRisolutivo">Stima potere risolutivo: <input type="text" name="stimaPotereRisolutivo" readonly></p>
+              <input type="submit" name="invio" value="inserisci">
+            </form>
+          </center>
+        </body>
+        </html>
         <?php
-        } else {// chiudo if per verificare se accedo alla pagina prima volta o se ho gia inserito dati
+        } else { // chiudo if per verificare se accedo alla pagina prima volta o se ho gia inserito dati
             $nome = "";
             $note = "";
             $tipo = "";
@@ -55,6 +121,12 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $risoluzioneAngolare = "";
             $stimaPotereRisolutivo = "";
             if ($_REQUEST["nome"] != "" & $_REQUEST["tipo"] != "" & $_REQUEST["marca"] != "" & $_REQUEST != ["disponibilita"]) {
+                /* E se l'utente inserisce prima tutti i campi e poi il tipo di strumento? OK
+                   Ci sono tre aperture: una in millimetri, una in pollici una in ?
+                   Montatura non è un numero
+                   Disponibilità è 0/1 (o true/false), non un numero
+                   Mettere anche conversione millimetri pollici (e viceversa)?
+                */
                 $nome = $_REQUEST["nome"];
                 $note = $_REQUEST["note"];
                 $tipo = $_REQUEST["tipo"];
@@ -105,18 +177,29 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $stmt->bindValue(":marca", $marca, PDO::PARAM_STR);
                 $stmt->bindValue(":disponibilita", $disponibilita, PDO::PARAM_INT);
                 $stmt->bindValue(":apertura", $apertura, PDO::PARAM_INT);
-                $stmt->bindValue(":campoFocale", $campoFocale, PDO::PARAM_INT);
-                $stmt->bindValue(":ingrandimenti", $ingrandimenti, PDO::PARAM_INT);
-                $stmt->bindValue(":lunghezzaFocale", $lunghezzaFocale, PDO::PARAM_INT);
-                // Sicuri che montatura sia un numero?
-                $stmt->bindValue(":montatura", $montatura, PDO::PARAM_INT);
-                $stmt->bindValue(":focalRatio", $focalRatio, PDO::PARAM_INT);
-                $stmt->bindValue(":campoCercatore", $campoCercatore, PDO::PARAM_INT);
-                $stmt->bindValue(":tipoTelescopio", $tipoTelescopio, PDO::PARAM_STR);
                 $stmt->bindValue(":aperturaMillimetri", $aperturaMillimetri, PDO::PARAM_INT);
-                $stmt->bindValue(":aperturaPollici", $aperturaPollici, PDO::PARAM_INT);
-                $stmt->bindValue(":risoluzioneAngolare", $risoluzioneAngolare, PDO::PARAM_INT);
-                $stmt->bindValue(":stimaPotereRisolutivo", $stimaPotereRisolutivo, PDO::PARAM_INT);
+                $stmt->bindValue(":ingrandimenti", $ingrandimenti, PDO::PARAM_INT);
+                if ($tipo == "Binocolo") {
+                    $stmt->bindValue(":campoFocale", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":lunghezzaFocale", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":montatura", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":focalRatio", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":campoCercatore", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":tipoTelescopio", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":aperturaPollici", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":risoluzioneAngolare", null, PDO::PARAM_NULL);
+                    $stmt->bindValue(":stimaPotereRisolutivo", null, PDO::PARAM_NULL);
+                } else {
+                    $stmt->bindValue(":campoFocale", $campoFocale, PDO::PARAM_INT);
+                    $stmt->bindValue(":lunghezzaFocale", $lunghezzaFocale, PDO::PARAM_INT);
+                    $stmt->bindValue(":montatura", $montatura, PDO::PARAM_INT);
+                    $stmt->bindValue(":focalRatio", $focalRatio, PDO::PARAM_INT);
+                    $stmt->bindValue(":campoCercatore", $campoCercatore, PDO::PARAM_INT);
+                    $stmt->bindValue(":tipoTelescopio", $tipoTelescopio, PDO::PARAM_STR);
+                    $stmt->bindValue(":aperturaPollici", $aperturaPollici, PDO::PARAM_INT);
+                    $stmt->bindValue(":risoluzioneAngolare", $risoluzioneAngolare, PDO::PARAM_INT);
+                    $stmt->bindValue(":stimaPotereRisolutivo", $stimaPotereRisolutivo, PDO::PARAM_INT);
+                }
                 $result = $stmt->execute();
                 if ($result) {
                     echo "<script language='javascript'>";
