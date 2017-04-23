@@ -9,30 +9,17 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         <head>
           <title>Inserimento nuovo strumento</title>
           <script type="text/javascript" language="javascript">
-            /* Codice abbastanza brutto */
+            // Si può fare ancora meglio con jquery
             function mostraCampi(x) {
+              var campiTelescopio = document.getElementsByClassName("telescopio");
               if (x.value == "Binocolo") {
-                document.getElementById("formCampoFocale").style.display = "none";
-                document.getElementById("formLunghezzaFocale").style.display = "none";
-                document.getElementById("formMontatura").style.display = "none";
-                document.getElementById("formCampoCercatore").style.display = "none";
-                document.getElementById("formMontatura").style.display = "none";
-                document.getElementById("formTipoTelescopio").style.display = "none";
-                document.getElementById("formAperturaPollici").style.display = "none";
-                document.getElementById("formFocalRatio").style.display = "none";
-                document.getElementById("formRisoluzioneAngolare").style.display = "none";
-                document.getElementById("formStimaPotereRisolutivo").style.display = "none";
+                for (var i = 0; i < campiTelescopio.length; i++) {
+                  campiTelescopio[i].style.display = "none";
+                }
               } else {
-                document.getElementById("formCampoFocale").style.display = "block";
-                document.getElementById("formLunghezzaFocale").style.display = "block";
-                document.getElementById("formMontatura").style.display = "block";
-                document.getElementById("formCampoCercatore").style.display = "block";
-                document.getElementById("formMontatura").style.display = "block";
-                document.getElementById("formTipoTelescopio").style.display = "block";
-                document.getElementById("formAperturaPollici").style.display = "block";
-                document.getElementById("formFocalRatio").style.display = "block";
-                document.getElementById("formRisoluzioneAngolare").style.display = "block";
-                document.getElementById("formStimaPotereRisolutivo").style.display = "block";
+                for (var i = 0; i < campiTelescopio.length; i++) {
+                  campiTelescopio[i].style.display = "block";
+                }
               }
             }
 
@@ -71,31 +58,31 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
           <center>
             <h1>Inserisci i dati dello strumento in questione:</h1>  <br><br>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
-              <p id="formNome">Nome: <input type="text" name="nome"></p>
-              <p id="formNote">Note: <input type="text" name="note"></p>
-              <p id="formTipo">Tipo: <select name="tipo" onchange="mostraCampi(this)">
+              <p>Nome: <input type="text" name="nome"></p>
+              <p>Note: <input type="text" name="note"></p>
+              <p>Tipo: <select name="tipo" onchange="mostraCampi(this)">
                 <option value="Telescopio">Telescopio</option>
                 <option value="Binocolo">Binocolo</option>
               </select></p>
-              <p id="formMarca">Marca: <input type="text" name="marca"></p>
-              <p id="formDisponibilita">Disponibilit&agrave;: <input type="text" name="disponibilita"></p>
-              <p id="formApertura">Apertura: <input type="text" name="apertura"></p>
-              <p id="formCampoFocale">Campo focale: <input type="text" name="campoFocale"></p>
-              <p id="formIngrandimenti">Ingrandimenti: <input type="text" name="ingrandimenti"></p>
-              <p id="formLunghezzaFocale">Lunghezza focale: <input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()"></p>
-              <p id="formMontatura">Montatura: <input type="text" name="montatura"></p>
-              <p id="formCampoCercatore">Campo del cercatore: <input type="text" name="campoCercatore"></p>
-              <p id="formTipoTelescopio">Tipo di telescopio: <select name="tipoTelescopio">
+              <p>Marca: <input type="text" name="marca"></p>
+              <p>Disponibilit&agrave;: <input type="text" name="disponibilita"></p>
+              <p>Apertura: <input type="text" name="apertura"></p>
+              <p class="telescopio">Campo focale: <input type="text" name="campoFocale"></p>
+              <p>Ingrandimenti: <input type="text" name="ingrandimenti"></p>
+              <p class="telescopio">Lunghezza focale: <input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()"></p>
+              <p class="telescopio">Montatura: <input type="text" name="montatura"></p>
+              <p class="telescopio">Campo del cercatore: <input type="text" name="campoCercatore"></p>
+              <p class="telescopio">Tipo di telescopio: <select name="tipoTelescopio">
                 <option value="Rifrattore">Rifrattore</option>
                 <option value="Riflettore">Riflettore</option>
                 <option value="Catadiottrico">Catadiottrico</option>
                 <option value="Altro">Altro</option>
               </select></p>
-              <p id="formAperturaMillimetri">Apertura (in millimetri): <input type="text" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()"></p>
-              <p id="formAperturaPollici">Apertura (in pollici): <input type="text" name="aperturaPollici" oninput="calcolaRisoluzioneAngolare()"></p>
-              <p id="formFocalRatio">Focal Ratio: <input type="text" name="focalRatio" readonly></p>
-              <p id="formRisoluzioneAngolare">Risoluzione angolare: <input type="text" name="risoluzioneAngolare" readonly></p>
-              <p id="formStimaPotereRisolutivo">Stima potere risolutivo: <input type="text" name="stimaPotereRisolutivo" readonly></p>
+              <p>Apertura (in millimetri): <input type="text" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()"></p>
+              <p class="telescopio">Apertura (in pollici): <input type="text" name="aperturaPollici" oninput="calcolaRisoluzioneAngolare()"></p>
+              <p class="telescopio">Focal Ratio: <input type="text" name="focalRatio" readonly></p>
+              <p class="telescopio">Risoluzione angolare: <input type="text" name="risoluzioneAngolare" readonly></p>
+              <p class="telescopio">Stima potere risolutivo: <input type="text" name="stimaPotereRisolutivo" readonly></p>
               <input type="submit" name="invio" value="inserisci">
             </form>
           </center>
