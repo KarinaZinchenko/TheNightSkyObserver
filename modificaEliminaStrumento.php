@@ -22,35 +22,55 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         <head>
           <title>Modifica/Elimina strumento</title>
           <script type="text/javascript" language="javascript">
-            function calcolaFocalRatio() {
-              lunghezzaFocale = document.getElementsByName("lunghezzaFocale")[0].value;
-              aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
-              campoFocalRatio = document.getElementsByName("focalRatio")[0];
-              if (aperturaMillimetri != 0) {
-                focalRatio = lunghezzaFocale/aperturaMillimetri;
-                campoFocalRatio.value = focalRatio;
-              } else {
-                campoFocalRatio.value = "Apertura deve essere diverso da zero!";
+          function roundNumber(num, scale) {
+            if (!("" + num).includes("e")) {
+              return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+            } else {
+              var arr = ("" + num).split("e");
+              var sig = ""
+              if(+arr[1] + scale > 0) {
+                sig = "+";
               }
+              return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
             }
+          }
 
-            function calcolaStimaPotereRisolutivoI() {
-              aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
-              campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
-              campoStimaPotereRisolutivo.value = 3.7 + 2.5 * Math.log(Math.pow(aperturaMillimetri, 2));
+          function calcolaFocalRatio() {
+            lunghezzaFocale = document.getElementsByName("lunghezzaFocale")[0].value;
+            aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
+            campoFocalRatio = document.getElementsByName("focalRatio")[0];
+            if (aperturaMillimetri != 0) {
+              focalRatio = lunghezzaFocale/aperturaMillimetri;
+              roundedFocalRatio = roundNumber(focalRatio, 2);
+              campoFocalRatio.value = roundedFocalRatio;
+            } else {
+              campoFocalRatio.value = "Apertura deve essere diverso da zero!";
             }
+          }
 
-            function calcolaStimaPotereRisolutivoII() {
-              aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
-              campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
-              campoStimaPotereRisolutivo.value = 9.5 + 5 * Math.log(Math.pow(aperturaPollici, 2));
-            }
+          function calcolaStimaPotereRisolutivoI() {
+            aperturaMillimetri = document.getElementsByName("aperturaMillimetri")[0].value;
+            campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
+            stimaPotereRisolutivo = 3.7 + 2.5 * Math.log(Math.pow(aperturaMillimetri, 2));
+            roundedStimaPotereRisolutivo = roundNumber(stimaPotereRisolutivo, 2);
+            campoStimaPotereRisolutivo.value = roundedStimaPotereRisolutivo;
+          }
 
-            function calcolaRisoluzioneAngolare() {
-              aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
-              campoRisoluzioneAngolare = document.getElementsByName("risoluzioneAngolare")[0];
-              campoRisoluzioneAngolare.value = 4.56/aperturaPollici;
-            }
+          function calcolaStimaPotereRisolutivoII() {
+            aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
+            campoStimaPotereRisolutivo = document.getElementsByName("stimaPotereRisolutivo")[0];
+            stimaPotereRisolutivo = 9.5 + 5 * Math.log(Math.pow(aperturaPollici, 2));
+            roundedStimaPotereRisolutivo = roundNumber(stimaPotereRisolutivo, 2);
+            campoStimaPotereRisolutivo.value = roundedStimaPotereRisolutivo;
+          }
+
+          function calcolaRisoluzioneAngolare() {
+            aperturaPollici = document.getElementsByName("aperturaPollici")[0].value;
+            campoRisoluzioneAngolare = document.getElementsByName("risoluzioneAngolare")[0];
+            risoluzioneAngolare = 4.56/aperturaPollici;
+            roundedRisoluzioneAngolare = roundNumber(risoluzioneAngolare, 2);
+            campoRisoluzioneAngolare.value = roundedRisoluzioneAngolare;
+          }
           </script>
         </head>
         <body>
