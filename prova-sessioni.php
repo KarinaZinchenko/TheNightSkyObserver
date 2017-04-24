@@ -12,7 +12,7 @@ if(isset($_SESSION["autenticato"]))
 	{
          if($tipo=="regolare")
          {
-         	echo "utente normale"; // pagina personale utente regolare
+         	echo "<a href='inserisciOsservazione.php'>Crea osservazione </a>"; // pagina personale utente regolare
          }
          elseif ($tipo=="amministratore") 
          {
@@ -25,6 +25,8 @@ if(isset($_SESSION["autenticato"]))
 	    echo "&nbsp; &nbsp; <a href='inserisciArea.php'>Inserisci Sito Osservativo </a>";
 	    echo "&nbsp; &nbsp; <a href='inserisciStrumento.php'>Inserisci Strumento </a>";
 	    echo "&nbsp; &nbsp; <a href='modificaEliminaStrumento.php'>Modifica/Elimina Strumento</a>";
+        echo "<br><br>";
+        echo "<a href='inserisciOsservazione.php'>Crea osservazione </a>";
         }
          else
            echo "utente insolvente";	

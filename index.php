@@ -1,5 +1,10 @@
 <?php
 //session_destroy();
+if(isset($_SESSION["autenticato"]) && $_SESSION["autenticato"]!="" )
+{
+  session_unset();
+  session_destroy();
+}
 session_start();
 include("config.php");
 ?>
@@ -37,7 +42,7 @@ if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]))
           exit();
  }
 
-  $sql="SELECT password,nome,cognome,tipo FROM anagrafica WHERE username='".addslashes($username)."';";                     
+  $sql="SELECT numero_socio,password,nome,cognome,tipo FROM anagrafica WHERE username='".addslashes($username)."';";                     
   $risposta=mysqli_query($conn,$sql)or die("Errore nella query: " . $sql . "\n" . mysqli_error($conn));
   if(mysqli_num_rows($risposta)!=0)
   {
@@ -49,6 +54,7 @@ if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]))
          $_SESSION["autenticato"]=true;
          $_SESSION["login"]=$username;
          $_SESSION["tipo"]=$tupla["tipo"];
+         $_SESSION["numero_socio"]=$tupla["numero_socio"];
        
          header("Location: prova-sessioni.php");
        }
