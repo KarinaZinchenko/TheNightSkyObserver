@@ -55,7 +55,12 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     $note = null;
                 }
                 if (empty($bortle)) {
-                    $bortle = null;
+                    if (empty($sqm)) {
+                        $bortle = null;
+                    }
+                    else {
+                        $bortle = conversionToBortle($sqm);
+                    }
                 }
                 if (empty($sqm)) {
                     $sqm = null;
@@ -118,5 +123,37 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     echo "alert('Non sei autorizzato ');";
     echo "</script>";
     header("Refresh:0; index.php", true, 303);
+}
+?>
+
+<?php
+function conversionToBortle ($sqm){
+    if($sqm <=22.00 && $sqm >= 21.99){
+        return 1;
+    }
+    if($sqm <21.99 && $sqm >= 21.89){
+        return 2;
+    }
+    if($sqm <21.89 && $sqm >= 21.69){
+        return 3;
+    }
+    if($sqm <21.69 && $sqm >= 20.49){
+        return 4;
+    }
+    if($sqm <20.49 && $sqm >= 19.5){
+        return 5;
+    }
+    if($sqm <19.5 && $sqm >= 18.95){
+        return 6;
+    }
+    if($sqm <18.95 && $sqm >= 18.38){
+        return 7;
+    }
+    if($sqm <18.38 && $sqm >= 17.8){
+        return 8;
+    }
+    if($sqm > 17.8){
+        return 9;
+    }
 }
 ?>
