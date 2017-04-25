@@ -51,6 +51,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 echo "</tr>";
             }
             ?>
+          </table>
          </center>
        </body>
      </html>
