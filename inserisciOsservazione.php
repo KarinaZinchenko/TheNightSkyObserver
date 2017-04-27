@@ -20,7 +20,7 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
           <h1> Inserisci i dati dell'osservazione: </h1>  <br><br>
          <form method="post" action="inserisciOsservazioneEffettivo.php">
         
-         categoria: <input type="text" name="categoria"><br><br>
+         Categoria: <input type="text" name="categoria"><br><br>
         Trasparenza: <input type="number" name="trasparenza" step=any><br><br>
         Seeing (scala antoniani): <input type="number" name="seeing_antoniani" step=any><br><br>
         Seeing (scala pickering): <input type="number" name="seeing_pickering" step=any><br><br>
@@ -47,18 +47,19 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
         for($i=1;$i<=$numero_osservazione;$i++)
           { echo "<hr>";
         ?>
-         stato: &nbsp; <select name="stato<?php echo $i; ?>" >
+         Stato: &nbsp; <select name="stato<?php echo $i; ?>" >
         <option value="pianificata" selected="selected"> pianificata </option>
         <option value="conclusa"> conclusa </option>
+        <option value="non_conclusa"> non conclusa </option>
          </select><br><br>
      <?php //fino a qui relativo a tabella osservazione  ?>
 
-        rating: <input type="number" name="rating<?php echo $i ?>" step=any><br><br>
-        descrizione: <input type="text" name="descrizione<?php echo $i ?>"><br><br>
-        immagine: <input type="text" name="immagine<?php echo $i ?>"><br><br>
-         note: <input type="text" name="note<?php echo $i ?>"><br><br>
-        ora  inizio: <input type="text" name="ora_inizio<?php echo $i ?>"><br><br>
-        ora fine: <input type="text" name="ora_fine<?php echo $i ?>"><br><br>
+        Rating: <input type="number" name="rating<?php echo $i ?>" step=any><br><br>
+        Descrizione: <input type="text" name="descrizione<?php echo $i ?>"><br><br>
+        Immagine: <input type="text" name="immagine<?php echo $i ?>"><br><br>
+         Note: <input type="text" name="note<?php echo $i ?>"><br><br>
+        Ora  inizio: <input type="text" name="ora_inizio<?php echo $i ?>"><br><br>
+        Ora fine: <input type="text" name="ora_fine<?php echo $i ?>"><br><br>
        Oggetto celeste osservato: &nbsp; <select name="oggetto_celeste<?php echo $i ?>">
        <?php 
            $sql="SELECT ID,nome FROM oggettoceleste;";
@@ -96,7 +97,7 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
                  }
 
         ?>
-
+        <option value=NULL> </option>
        </select> <br><br>
 
          Filtro usato: &nbsp; <select name="filtro<?php echo $i ?>">
@@ -116,7 +117,7 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
                  }
 
         ?>
-
+       <option value=NULL> </option>
        </select> <br><br>
 
         Strumento Usato: &nbsp; <select name="strumento<?php echo $i ?>">
@@ -157,7 +158,7 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
      else
      {
          ?> <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
-            inserire il numero di osservazioni che si intende fare: &nbsp; <input type="number" name="numero_osservazioni"/>&nbsp;
+            Inserire il numero di osservazioni che si intende fare: &nbsp; <input type="number" name="numero_osservazioni"/>&nbsp;
             <input type="submit" name="invio_numero_oggetti_osservati" value="scegli" />
             </form>
             <?php

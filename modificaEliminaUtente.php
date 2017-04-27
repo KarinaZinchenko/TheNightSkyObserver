@@ -25,11 +25,11 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
          <center>
          <form method="post" action="modificaEliminaUtenteEffettivo.php">
           <input type="hidden" name="id_utente" value="<?php echo $_POST["tipo_utente"];  ?>" />
-         nome: <input type="text" name="nome" value="<?php echo $tupla['nome']; ?>"><br><br>
-         cognome: <input type="text" name="cognome" value="<?php echo $tupla['cognome'];?>"><br><br>
-         username: <input type="text" name="username" value="<?php echo $tupla['username'];?>"><br><br>
-	     password: <input type="password" name="password" value="<?php echo $tupla['password'];?>"><br><br>
-	     tipo utente: &nbsp;<select name="tipo_utente" value="<?php echo $tupla['tipo'];?>">
+         Nome: <input type="text" name="nome" value="<?php echo $tupla['nome']; ?>"><br><br>
+         Cognome: <input type="text" name="cognome" value="<?php echo $tupla['cognome'];?>"><br><br>
+         Username: <input type="text" name="username" value="<?php echo $tupla['username'];?>"><br><br>
+	     Password: <input type="password" name="password" value="<?php echo $tupla['password'];?>"><br><br>
+	     Tipo utente: &nbsp;<select name="tipo_utente" value="<?php echo $tupla['tipo'];?>">
 	     <?php
            $regolare="";
 	       $amministratore="";
@@ -41,13 +41,10 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
          <option value="<?php echo "$tipo_utenti[1]";?>" <?php echo $amministratore; ?>><?php echo "$tipo_utenti[1]";?> </option>
          <option value="<?php echo "$tipo_utenti[2]";?>" <?php echo $insolvente; ?>><?php echo "$tipo_utenti[2]";?> </option>
 	      </select> <br><br>
-	     data scadenza tessera: <input type="date" name="data_scadenza_tessera" value="<?php echo $tupla['scadenza_tessera'];?>"><br><br>
-	     data nascita: <input type="date" name="data_nascita" value="<?php echo $tupla['data_nascita'];?>"><br><br>
-	     <select name="scelta_operazione">
-          <option value="modifica">Modifica </option>
-          <option value="elimina">Elimina </option>
-	     </select>
-	     <input type="submit" name="invio" value="Esegui operazione">
+	     Data scadenza tessera: <input type="date" name="data_scadenza_tessera" value="<?php echo $tupla['scadenza_tessera'];?>"><br><br>
+	     Data nascita: <input type="date" name="data_nascita" value="<?php echo $tupla['data_nascita'];?>"><br><br>
+	    
+	    <input type="submit" name="scelta_operazione" value="modifica"> &nbsp;&nbsp;  <input type="submit" name="scelta_operazione" value="elimina">&nbsp;&nbsp;<input type="submit" name="scelta_operazione" value="riattiva tessera"/>
          </form>
          </center>
          </body>

@@ -13,6 +13,14 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
             case "elimina": 
                             $sql="DELETE  FROM anagrafica WHERE numero_socio=".$_POST["id_utente"].";";
                             break;
+            case "riattiva tessera":
+                               $aux=substr($_POST["data_scadenza_tessera"], 0, 4);
+                               $aux=intval($aux);
+                               $aux=$aux+1;
+                               $_POST["data_scadenza_tessera"]="".$aux.substr($_POST["data_scadenza_tessera"],4,strlen($_POST["data_scadenza_tessera"])-1);
+                              $sql="UPDATE anagrafica SET scadenza_tessera='".$_POST["data_scadenza_tessera"]."' WHERE numero_socio=".$_POST["id_utente"].";";
+                          
+                        break;
          };//chiudo switch
 
           if(mysqli_query($conn,$sql))
@@ -51,4 +59,4 @@ else
         header( "Refresh:0; index.php", true, 303);
 }
 
-?>
+?>
