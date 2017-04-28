@@ -21,8 +21,8 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                </thead>
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
-                $stmt = $conn->prepare("SELECT d_oss.stato, ogg.nome, d_oss.id_osservazioni FROM datiosservazione AS d_oss JOIN oggettoceleste AS ogg ON ogg.id = d_oss.id_oggettoceleste");
-                # $stmt = $conn->prepare("SELECT stato, id_oggettoceleste, id_osservazioni FROM datiosservazione");
+                #$stmt = $conn->prepare("SELECT d_oss.stato, ogg.nome, d_oss.id_osservazioni FROM datiosservazione AS d_oss JOIN oggettoceleste AS ogg ON ogg.id = d_oss.id_oggettoceleste");
+                $stmt = $conn->prepare("SELECT DISTINCT stato, id_osservazioni FROM datiosservazione");
                 # Salvo in una variabile se la query può non andare a buon fine ma può non andare a buon fine?
                 $result = $stmt->execute();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,10 +34,10 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         # $stmt->bindValue(":idOggettoCeleste", $row['id_oggettoceleste'], PDO::PARAM_INT);
                         # $result = $stmt->execute();
                         # $oggettoceleste = $stmt->fetch();
-                        $nomeOggettoceleste = $row['nome'];
+                        # $nomeOggettoceleste = $row['nome'];
                         echo "<tr>";
                         # Devo passare l'ID per pescarlo come GET nell'altra pagina, può dare problemi?
-                        echo "<td><a href=\"vistaOsservazione.php?id=". $row['id_osservazioni'] ."\">". $nomeOggettoceleste ."</td>";
+                        echo "<td><a href=\"vistaOsservazione.php?id=". $row['id_osservazioni'] ."\">Osservazione numero: ". $row['id_osservazioni'] ."</td>";
                         if ($row['stato'] == 'conclusa') {
                             $stato = "Conclusa";
                         } else {
