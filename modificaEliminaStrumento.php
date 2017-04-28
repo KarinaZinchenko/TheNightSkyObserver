@@ -82,16 +82,15 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
               <p>Tipo: <input type="text" name="tipo" value="<?php echo $tupla['tipo'];?>"></p>
               <p>Marca: <input type="text" name="marca" value="<?php echo $tupla['marca'];?>"></p>
               <p>Disponibilit&agrave;: <input type="text" name="disponibilita" value="<?php echo $tupla['disponibilita'];?>"></p>
-              <p>Apertura: <input type="text" name="apertura" value="<?php echo $tupla['apertura'];?>"></p>
                 <?php
-                if ($tupla['tipo'] == "Telescopio") {
+                if ($tupla['tipo'] == "telescopio") {
                     $campoFocale = $tupla['campo_focale'];
                     echo "<p class=\"telescopio\">Campo focale: <input type=\"text\" name=\"campoFocale\" value=\"$campoFocale\"></p>";
                 }
                 ?>
               <p>Ingrandimenti: <input type="date" name="ingrandimenti" value="<?php echo $tupla['ingrandimenti'];?>"></p>
                 <?php
-                if ($tupla['tipo'] == "Telescopio") {
+                if ($tupla['tipo'] == "telescopio") {
                     $lunghezzaFocale = $tupla['lunghezza_focale'];
                     $montatura = $tupla['montatura'];
                     $campoCercatore = $tupla['campo_cercatore'];
@@ -126,7 +125,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
               <p>Apertura (in millimetri): <input type="date" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()" value="<?php echo $tupla['apertura_millimetri'];?>">
               </p>
                 <?php
-                if ($tupla['tipo'] == "Telescopio") {
+                if ($tupla['tipo'] == "telescopio") {
                     $aperturaPollici = $tupla['apertura_pollici'];
                     $focalRatio = $tupla['focal_ratio'];
                     $risoluzioneAngolare = $tupla['risoluzione_angolare'];

@@ -7,17 +7,16 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             case "modifica":
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $stmt = $conn->prepare("UPDATE strumento SET nome= :nome, note = :note, tipo = :tipo, marca = :marca, disponibilita = :disponibilita, apertura = :apertura, campo_focale = :campoFocale, ingrandimenti = :ingrandimenti, lunghezza_focale = :lunghezzaFocale, montatura = :montatura, focal_ratio = :focalRatio, campo_cercatore = :campoCercatore, tipo_telescopio = :tipoTelescopio, apertura_millimetri = :aperturaMillimetri, apertura_pollici = :aperturaPollici, risoluzione_angolare = :risoluzioneAngolare, stima_potere_risolutivo = :stimaPotereRisolutivo WHERE ID = :IDStrumento");
+                $stmt = $conn->prepare("UPDATE strumento SET nome= :nome, note = :note, tipo = :tipo, marca = :marca, disponibilita = :disponibilita, campo_focale = :campoFocale, ingrandimenti = :ingrandimenti, lunghezza_focale = :lunghezzaFocale, montatura = :montatura, focal_ratio = :focalRatio, campo_cercatore = :campoCercatore, tipo_telescopio = :tipoTelescopio, apertura_millimetri = :aperturaMillimetri, apertura_pollici = :aperturaPollici, risoluzione_angolare = :risoluzioneAngolare, stima_potere_risolutivo = :stimaPotereRisolutivo WHERE ID = :IDStrumento");
                 $stmt->bindValue(":nome", $_POST["nome"], PDO::PARAM_STR);
                 $stmt->bindValue(":note", $_POST["note"], PDO::PARAM_STR);
                 $stmt->bindValue(":tipo", $_POST["tipo"], PDO::PARAM_STR);
                 $stmt->bindValue(":marca", $_POST["marca"], PDO::PARAM_STR);
                 $stmt->bindValue(":disponibilita", $_POST["disponibilita"], PDO::PARAM_INT);
-                $stmt->bindValue(":apertura", $_POST["apertura"], PDO::PARAM_INT);
                 $stmt->bindValue(":campoFocale", $_POST["campoFocale"], PDO::PARAM_INT);
                 $stmt->bindValue(":ingrandimenti", $_POST["ingrandimenti"], PDO::PARAM_INT);
                 $stmt->bindValue(":lunghezzaFocale", $_POST["lunghezzaFocale"], PDO::PARAM_INT);
-                $stmt->bindValue(":montatura", $_POST["montatura"], PDO::PARAM_INT);
+                $stmt->bindValue(":montatura", $_POST["montatura"], PDO::PARAM_STR);
                 $stmt->bindValue(":focalRatio", $_POST["focalRatio"], PDO::PARAM_INT);
                 $stmt->bindValue(":campoCercatore", $_POST["campoCercatore"], PDO::PARAM_INT);
                 $stmt->bindValue(":tipoTelescopio", $_POST["tipoTelescopio"], PDO::PARAM_STR);

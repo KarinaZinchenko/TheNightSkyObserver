@@ -18,7 +18,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         $nome = $row['nome'];
         $tipo = $row['tipo'];
         $marca = $row['marca'];
-        $apertura = $row['apertura'];
         $campoFocale = $row['campo_focale'];
         $ingrandimenti = $row['ingrandimenti'];
         $lunghezzaFocale = $row['lunghezza_focale'];
@@ -45,7 +44,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                    <th>Nome</th>
                    <th>Tipo</th>
                    <th>Marca</th>
-                   <th>Apertura</th>
                    <th>Campo focale</th>
                    <th>Ingrandimenti</th>
                    <th>Lunghezza focale</th>
@@ -72,7 +70,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 echo "<td>". $nome ."</td>";
                 echo "<td>". $tipo ."</td>";
                 echo "<td>". $marca ."</td>";
-                echo "<td>". $apertura ."</td>";
                 echo "<td>". $campoFocale ."</td>";
                 echo "<td>". $ingrandimenti ."</td>";
                 echo "<td>". $lunghezzaFocale ."</td>";

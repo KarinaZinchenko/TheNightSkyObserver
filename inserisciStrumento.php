@@ -86,11 +86,15 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
               </select></p>
               <p>Marca: <input type="text" name="marca"></p>
               <p>Disponibilit&agrave;: <input type="text" name="disponibilita"></p>
-              <p>Apertura: <input type="text" name="apertura"></p>
               <p class="telescopio">Campo focale: <input type="text" name="campoFocale"></p>
               <p>Ingrandimenti: <input type="text" name="ingrandimenti"></p>
               <p class="telescopio">Lunghezza focale: <input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()"></p>
-              <p class="telescopio">Montatura: <input type="text" name="montatura"></p>
+              <p class="telescopio">Montatura: <select type="text" name="montatura">
+                <option value="Equatoriale">Equatoriale</option>
+                <option value="Altazimutale">Altazimutale</option>
+                <option value="Dobson">Dobson</option>
+                <option value="Altro">Altro</option>
+              </select></p>
               <p class="telescopio">Campo del cercatore: <input type="text" name="campoCercatore"></p>
               <p class="telescopio">Tipo di telescopio: <select name="tipoTelescopio">
                 <option value="Rifrattore">Rifrattore</option>
@@ -115,7 +119,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $tipo = "";
             $marca = "";
             $disponibilita = "";
-            $apertura = "";
             $campoFocale = "";
             $ingrandimenti = "";
             $lunghezzaFocale = "";
@@ -128,10 +131,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $risoluzioneAngolare = "";
             $stimaPotereRisolutivo = "";
             if ($_REQUEST["nome"] != "" & $_REQUEST["tipo"] != "" & $_REQUEST["marca"] != "" & $_REQUEST != ["disponibilita"]) {
-                /* E se l'utente inserisce prima tutti i campi e poi il tipo di strumento? OK
-                   Ci sono tre aperture: una in millimetri, una in pollici una in ?
-                   Montatura non è un numero
-                   Disponibilità è 0/1 (o true/false), non un numero
+                /* Disponibilità è 0/1 (o true/false), non un numero ma va bene comunque
                    Mettere anche conversione millimetri pollici (e viceversa)?
                 */
                 $nome = $_REQUEST["nome"];
@@ -139,7 +139,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $tipo = $_REQUEST["tipo"];
                 $marca = $_REQUEST["marca"];
                 $disponibilita = $_REQUEST["disponibilita"];
-                $apertura = $_REQUEST["apertura"];
                 $campoFocale = $_REQUEST["campoFocale"];
                 $ingrandimenti = $_REQUEST["ingrandimenti"];
                 $lunghezzaFocale = $_REQUEST["lunghezzaFocale"];
@@ -157,7 +156,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $tipo = nl2br(htmlentities($tipo, ENT_QUOTES, 'UTF-8'));
                 $marca = nl2br(htmlentities($marca, ENT_QUOTES, 'UTF-8'));
                 $disponibilita = nl2br(htmlentities($disponibilita, ENT_QUOTES, 'UTF-8'));
-                $apertura = nl2br(htmlentities($apertura, ENT_QUOTES, 'UTF-8'));
                 $campoFocale = nl2br(htmlentities($campoFocale, ENT_QUOTES, 'UTF-8'));
                 $ingrandimenti = nl2br(htmlentities($ingrandimenti, ENT_QUOTES, 'UTF-8'));
                 $lunghezzaFocale = nl2br(htmlentities($lunghezzaFocale, ENT_QUOTES, 'UTF-8'));
@@ -177,13 +175,12 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                   Nel caso volessimo usare PDO invece di questo mostro qui sopra
                 */
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
-                $stmt = $conn->prepare("INSERT INTO strumento(nome, note, tipo, marca, disponibilita, apertura, campo_focale, ingrandimenti, lunghezza_focale, montatura, focal_ratio, campo_cercatore, tipo_telescopio, apertura_millimetri, apertura_pollici, risoluzione_angolare, stima_potere_risolutivo) VALUES (:nome, :note, :tipo, :marca, :disponibilita, :apertura, :campoFocale, :ingrandimenti, :lunghezzaFocale, :montatura, :focalRatio, :campoCercatore, :tipoTelescopio, :aperturaMillimetri, :aperturaPollici, :risoluzioneAngolare, :stimaPotereRisolutivo)");
+                $stmt = $conn->prepare("INSERT INTO strumento(nome, note, tipo, marca, disponibilita, campo_focale, ingrandimenti, lunghezza_focale, montatura, focal_ratio, campo_cercatore, tipo_telescopio, apertura_millimetri, apertura_pollici, risoluzione_angolare, stima_potere_risolutivo) VALUES (:nome, :note, :tipo, :marca, :disponibilita, :campoFocale, :ingrandimenti, :lunghezzaFocale, :montatura, :focalRatio, :campoCercatore, :tipoTelescopio, :aperturaMillimetri, :aperturaPollici, :risoluzioneAngolare, :stimaPotereRisolutivo)");
                 $stmt->bindValue(":nome", $nome, PDO::PARAM_STR);
                 $stmt->bindValue(":note", $note, PDO::PARAM_NULL);
                 $stmt->bindValue(":tipo", $tipo, PDO::PARAM_STR);
                 $stmt->bindValue(":marca", $marca, PDO::PARAM_STR);
                 $stmt->bindValue(":disponibilita", $disponibilita, PDO::PARAM_INT);
-                $stmt->bindValue(":apertura", $apertura, PDO::PARAM_INT);
                 $stmt->bindValue(":aperturaMillimetri", $aperturaMillimetri, PDO::PARAM_INT);
                 $stmt->bindValue(":ingrandimenti", $ingrandimenti, PDO::PARAM_INT);
                 if ($tipo == "Binocolo") {
@@ -217,7 +214,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     echo "<script language='javascript'>";
                     echo "alert('Errore nella query');";
                     echo "</script>";
-                    header("Refresh:0; url=inserisciArea.php", true, 303);
+                    header("Refresh:0; url=inserisciStrumento.php", true, 303);
                 }
                 $conn = null;
                 $stmt = null;
