@@ -37,6 +37,11 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         <html>
         <head>
           <title>Vista osservazione</title>
+          <script>
+              function printPage() {
+                  window.print();
+              }
+         </script>
          </head>
          <body>
            <center>
@@ -121,6 +126,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 }
                 ?>
             </table>
+           <button onclick="printPage()">Stampa</button>
            </center>
          </body>
          </html>
