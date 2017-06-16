@@ -1,114 +1,196 @@
 <?php
-//session_destroy();
-if(isset($_SESSION["autenticato"]) && $_SESSION["autenticato"]!="" )
-{
-  session_unset();
-  session_destroy();
-}
 session_start();
-include("config.php");
-?>
+if(isset($_SESSION["autenticato"]))
+{
+    $loggato=true;
+    include("navbar.php");
+}
+else
+{
+    $loggato=false;
+}
 
-<html>
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-	<title>Log-in </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>The Nignt Sky Observer</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.css">
+
+    <link rel="stylesheet" href="css/custom-styles.css">
+
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/font-awesome-ie7.css">
+
+    <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-	<center><br><br>
-	username: <input type="text" name="username"><br><br>
-	password: <input type="password" name="password"><br><br>
-	<input type="submit" name="invia" value="Entra">
-	</center>
-</form>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
 
 
+<div class="container">
+
+    <div class="row-fluid">
+
+        <div class="span10 offset1">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="index.php">
+                            <div class="item">
+                                <img src="img/logo.png" alt="">
+                                <span id="saluto"></span>
+                            </div>
+                        </a>
+                    </div>
+                    <?php
+                    if($loggato!=true)
+                    {
+
+                    ?>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="index.php">Home</a></li>
+                            <li><a href="login.php">Login</a></li>
+                            <li id ="profilo"></li>
+                            <li><a href="contact.php">Contattaci</a></li>
+                            <li><a href="logout.php" id="logout" style="display: none">Log-out</a></li>
+                        </ul>
+                    </div>
+                    <?php
+                        }
+                        else
+                        {
+                            ?>
+                                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="index.php">Home</a></li>
+                            <li id ="profilo"></li>
+                            <li><a href="contact.php">Contattaci</a></li>
+                            <li><a href="logout.php" id="logout" >Log-out</a></li>
+                        </ul>
+                    </div>
+                             
+                            <?php
+                        }
+                    ?>
+                </div>
+            </nav>
+
+            <div class="banner-shadow">
+                <div class="banner">
+                    <div class="carousel slide" id="myCarousel" data-ride="carousel">
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="img/1.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img src="img/2.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img src="img/3.jpg" alt="">
+                            </div>
+                        </div>
+
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-heading">
+                <div class="row-fluid">
+                    <div class="span10 offset1">
+                        <h1>Benvenuti!</h1>
+                        <h2>Questo &egrave; il sito dell'osservatorio astronomico amatoriale <br>
+                            <strong>The Night Sky Observer</strong> <br>
+                            <?php
+                            if($loggato!=true)
+                                {?>
+                            Per accedere ai contenuti &egrave; necessario effettuare il login</h2>
+                        <a href="login.php" class="btn">login</a>
+                        <?php
+                               }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-block">
+                <div class="portfolio-title">
+                    <h1>portfolio</h1>
+                    <h2>Ecco alcune delle foto dei nostri soci</h2>
+                </div>
+                <div class="row-fluid">
+                    <ul class="thumbnails">
+                        <li class="no-space">
+                            <a href="#" class="circle"><img src="img/a.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/b.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/c.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/h.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/e.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/f.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/g.png" alt=""></a>
+                        </li>
+                        <li>
+                            <a href="#" class="circle"><img src="img/d.png" alt=""></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
-if ($_SERVER["REQUEST_METHOD"]=="POST") {
-  $username="";
-  $password="";
-if(isset($_REQUEST["username"]) && isset($_REQUEST["password"])) 
- {
-    $username=$_REQUEST["username"];
-    $password=$_REQUEST["password"];
+include ("footer.php");
+?>
 
- } 
 
- if($username=="" || $password=="")
- {
-         echo "<script language='javascript'>"; 
-         echo "alert('I campi user e password sono obbligatori');";
-        echo " </script>";
-          exit();
- }
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    $('#myCarousel').carousel({
+        interval: 2000
+    });
+</script>
 
-  $sql="SELECT numero_socio,password,nome,cognome,tipo FROM anagrafica WHERE username='".addslashes($username)."';";                     
-  $risposta=mysqli_query($conn,$sql)or die("Errore nella query: " . $sql . "\n" . mysqli_error($conn));
-  if(mysqli_num_rows($risposta)!=0)
-  {
-     while ($tupla = mysqli_fetch_array($risposta))
-    	{
-    		if($tupla["password"]==$password)
-        {
-    		echo "i dati di log-in sono corretti per l'utente ".$tupla["nome"]." ".$tupla["cognome"];
-         $_SESSION["autenticato"]=true;
-         $_SESSION["login"]=$username;
-         $_SESSION["tipo"]=$tupla["tipo"];
-         $_SESSION["numero_socio"]=$tupla["numero_socio"];
-       
-         header("Location: prova-sessioni.php");
-       }
-    	    else
-    	    echo "User e/o password non esistenti o errati";
-    	}
-     
-  }
-  else
-  	echo "User e/o password non esistenti o errati";
-  	
-/*  if($_SERVER["REQUEST_METHOD"]=="POST")
-  {
-  	$nome="";
-  	$cognome="";
-  	$username="";
-  	$password="";
-  	if(isset($_POST["nome"]))
-  	{
-  		$nome=$_POST["nome"];
-  	}
-  	  	if(isset($_POST["cognome"]))
-  	{
-  		$cognome=$_POST["cognome"];
-  	}
-  	  	if(isset($_POST["username"]))
-  	{
-  		$username=$_POST["username"];
-  	}
-  	  	if(isset($_POST["password"]))
-  	{
-  		$password=$_POST["password"];
-  	}
-  	 $nome=nl2br(htmlentities($nome,ENT_QUOTES,'UTF-8'));
-  	  $cognome=nl2br(htmlentities($cognome,ENT_QUOTES,'UTF-8'));
-  	   $username=nl2br(htmlentities($username,ENT_QUOTES,'UTF-8'));
-  	    $password=nl2br(htmlentities($password,ENT_QUOTES,'UTF-8'));
-
-  	$sql=" INSERT INTO utenti (nome,cognome,username,password) VALUES ('".addslashes($nome)."','".addslashes($cognome)."','".addslashes($username)."','".addslashes(md5($password))."');";
-  	if(mysqli_query($conn, $sql) )
-  {
-     echo "<script language='javascript'>"; 
-       	 echo "alert('Inserimento effettuato');";
-          echo " </script>";
-  } 
-  else {die("Errore nella query: "     . $sql . "\n" . mysqli_error($conn));}
-
- 	
-  }
-*/
-
-  mysqli_close($conn);
-}
-  
- ?>
-  </body>
+</body>
 </html>

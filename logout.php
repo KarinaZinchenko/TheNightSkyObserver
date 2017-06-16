@@ -12,4 +12,4 @@ $params["secure"], $params["httponly"]
 }
 session_destroy(); // distrugge la sessione
 header("Location: index.php"); // redirige il browser
-?>
+?>

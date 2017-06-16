@@ -1,6 +1,12 @@
 <?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
+
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     # if ($_SESSION["tipo"] == "amministratore") {
         # if (!isset($_POST["invio"])) {
@@ -31,68 +37,100 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         $stimaPotereRisolutivo = $row['stima_potere_risolutivo'];
         $note = $row['note'];
         ?>
-        <html>
-        <head>
-          <title>Vista strumento</title>
-         </head>
-         <body>
-           <center>
-             <h1>Caratteristiche strumento</h1><br><br>
-             <table>
-               <thead>
+        <div class="featured-heading">
+            <h1>Caratteristiche strumento</h1><br>
+            <table class="table" >
+                <tbody>
                  <tr>
-                   <th>Nome</th>
-                   <th>Tipo</th>
-                   <th>Marca</th>
-                   <th>Campo focale</th>
-                   <th>Ingrandimenti</th>
-                   <th>Lunghezza focale</th>
-                   <th>Montatura</th>
-                   <th>Focal ratio</th>
-                   <th>Campo cercatore</th>
-                   <th>Tipo telescopio</th>
-                   <th>Apertura in millimetri</th>
-                   <th>Apertura in pollici</th>
-                   <th>Risoluzione angolare</th>
-                   <th>Stima potere risolutivo</th>
-                   <th>Note</th>
+                   <th id="verticaltable">Nome</th>
+                     <?php echo "<td id='verticaltable'>". $nome ."</td>"; ?>
                  </tr>
-               </thead>
-               <tbody>
                  <tr>
-                <?php
-                /*
-                Hm, effettivamente sto usando variabili che non hanno subito modifiche e potrei usare direttamente
-                il risultato della query ma magari può servire fare operazioni su di esse (ad esempio: non stampare il
-                tipo del telescopio se si tratta di un altro tipo di strumento)
-                C'erano anche delle formule da calcolare
-                */
-                echo "<td>". $nome ."</td>";
-                echo "<td>". $tipo ."</td>";
-                echo "<td>". $marca ."</td>";
-                echo "<td>". $campoFocale ."</td>";
-                echo "<td>". $ingrandimenti ."</td>";
-                echo "<td>". $lunghezzaFocale ."</td>";
-                echo "<td>". $montatura ."</td>";
-                echo "<td>". $focalRatio ."</td>";
-                echo "<td>". $campoCercatore ."</td>";
-                echo "<td>". $tipoTelescopio ."</td>";
-                echo "<td>". $aperturaMM ."</td>";
-                echo "<td>". $aperturaPollici ."</td>";
-                echo "<td>". $risoluzioneAngolare ."</td>";
-                echo "<td>". $stimaPotereRisolutivo ."</td>";
-                echo "<td>". $note ."</td>";
-                ?>
-                </tr>
-              </tbody>
-           </center>
-         </body>
-         </html>
+                   <th id="verticaltable">Tipo</th>
+                     <?php echo "<td id='verticaltable'>". $tipo ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Marca</th>
+                     <?php echo "<td id='verticaltable'>". $marca ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Campo focale</th>
+                     <?php echo "<td id='verticaltable'>". $campoFocale ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Ingrandimenti</th>
+                     <?php echo "<td id='verticaltable'>". $ingrandimenti ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Lunghezza focale</th>
+                     <?php echo "<td id='verticaltable'>". $lunghezzaFocale ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Montatura</th>
+                     <?php echo "<td id='verticaltable'>". $montatura ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Focal ratio</th>
+                     <?php echo "<td id='verticaltable'>". $focalRatio ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Campo cercatore</th>
+                     <?php echo "<td id='verticaltable'>". $campoCercatore ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Tipo telescopio</th>
+                     <?php echo "<td id='verticaltable'>". $tipoTelescopio ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Apertura in millimetri</th>
+                     <?php echo "<td id='verticaltable'>". $aperturaMM ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Apertura in pollici</th>
+                     <?php echo "<td id='verticaltable'>". $aperturaPollici ."</td>";
+                     ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Risoluzione angolare</th>
+                     <?php  echo "<td id='verticaltable'>". $risoluzioneAngolare ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Stima potere risolutivo</th>
+                     <?php echo "<td id='verticaltable'>". $stimaPotereRisolutivo ."</td>";
+                      ?>
+                 </tr>
+                 <tr>
+                   <th id="verticaltable">Note</th>
+                     <?php echo "<td id='verticaltable'>". $note ."</td>"; ?>
+                 </tr>
+               </tbody>
+
+           </table>
+         </div>
         <?php
 } else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
+    ?>
+    <script>
+        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+    </script>
+    <?php
+    header("Refresh:2; index.php", true, 303);
+
 }
-?>
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
+?>

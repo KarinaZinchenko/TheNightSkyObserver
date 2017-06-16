@@ -1,20 +1,25 @@
+<head>
+    <title>Vista strumenti magazzino</title>
+</head>
 <?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
+
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     # if ($_SESSION["tipo"] == "amministratore") {
         # if (!isset($_POST["invio"])) {
         ?>
-        <html>
-        <head>
-          <title>Vista strumenti magazzino</title>
-         </head>
-         <body>
-           <center>
-             <h1>Strumenti disponibili in magazzino</h1><br><br>
-             <table>
-               <thead>
-                 <tr>
+        <div class="featured-heading">
+            <h1>Strumenti disponibili in magazzino</h1>
+            <br>
+            <table class="table">
+                <thead class="thead-default">
+                <tr>
                    <th>Nome</th>
                    <th>Tipo</th>
                    <th>Marca</th>
@@ -38,16 +43,21 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "</tr>";
                     }
                     echo "</tbody>";
+                    echo "</table>";
+                    echo "</div>";
                 }
-                ?>
-           </center>
-         </body>
-         </html>
-        <?php
-} else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
-}
-?>
+} else
+		{?>
+			<script>
+				swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+			</script>
+			<?php
+			header("Refresh:2; index.php", true, 303);
+
+		}
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
+?>

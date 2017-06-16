@@ -1,33 +1,20 @@
-<head>
-    <title>Vista osservazioni programmate</title>
-     <script>
-        function printPage() {
-            window.print();
-        }
-    </script>
-</head>
 <?php
-session_start();
+//session_start();
 include("config.php");
-include("header.php");
-include("navbar.php");
-echo "<div class='container'>";
-echo "<div class='row-fluid'>";
-echo "<div class='span10 offset1'>";
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
+    $idUser = $_GET['id'];
     # if ($_SESSION["tipo"] == "amministratore")|| $_SESSION["tipo"] == "regolare") {
         # if (!isset($_POST["invio"])) {
         ?>
-        <div class="featured-heading">
-             <h1>Osservazioni programmate</h1><br>
-            <table class="table">
-                <thead class="thead-default">
+
+             <h1>Osservazioni programmate</h1><br><br>
+             <table>
+               <thead>
                  <tr>
                    <th>Descrizione</th>
                    <th>Note</th>
                    <th>Ora inizio</th>
                    <th>Ora fine</th>
-                   <th>Immagine</th>
                      <th>Oggetto celeste</th>
                      <th>Strumento</th>
                      <th>Oculare</th>
@@ -40,12 +27,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
 
-                /*$stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio
-                                        FROM datiosservazione AS d_oss
-                                        WHERE d_oss.stato = :stato
-                                        ");
-                */
-                $stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio, d_oss.immagine , ogg.nome AS oggetto, s.nome AS strumento, o.nome AS oculare, f.nome AS filtro, oss.categoria AS categoria, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
+                $stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio, ogg.nome AS oggetto, s.nome AS strumento, o.nome AS oculare, f.nome AS filtro, oss.categoria AS categoria, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
                                         FROM datiosservazione AS d_oss
                                         JOIN oggettoceleste AS ogg ON ogg.id=d_oss.id_oggettoceleste
                                         JOIN strumento AS s ON s.id=d_oss.id_strumento
@@ -55,15 +37,16 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                                         (
                                              osservazioni AS oss
                                              JOIN areageografica AS ar ON ar.id=oss.id_area_geografica
-                                             JOIN anagrafica AS an ON an.numero_socio=oss.id_anagrafica
+                                             JOIN anagrafica AS an ON an.numero_socio=oss.id_anagrafica AND an.numero_socio=:idUser
                                         )ON oss.id=d_oss.id_osservazioni
                                         WHERE d_oss.stato = :stato
-                                        ORDER BY d_oss.ora_inizio ASC
                                         ");
 
 
                 # Salvo in una variabile se la query può non andare a buon fine ma può non andare a buon fine?
-                $result = $stmt->execute(array(':stato' => 'pianificata'));
+                $stmt->bindValue(":idUser", $idUser, PDO::PARAM_INT);
+                $stmt->bindValue(":stato", "programmata", PDO::PARAM_STR);
+                $result = $stmt->execute();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $row_count = $stmt->rowCount();
 
@@ -76,12 +59,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<td>". $row['note'] ."</td>";
                         echo "<td>". $row['ora_inizio'] ."</td>";
                         echo "<td>". $row['ora_fine'] ."</td>";
-                        if(file_exists($row['immagine'])){
-                            echo "<td><a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a></td>";
-                        }
-                        else{
-                            echo "<td><img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>"." </td>";
-                        }
                         echo "<td>". $row['oggetto'] ."</td>";
                         echo "<td>". $row['strumento'] ."</td>";
                         echo "<td>". $row['oculare'] ."</td>";
@@ -94,23 +71,11 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     echo "</tbody>";
                 }
                 ?>
-         </table>
-         <br>
-          <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
-         </div>
-
         <?php
-} else {?>
-    <script>
-        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
-    </script>
-    <?php
-    header("Refresh:2; index.php", true, 303);
-
+} else {
+    echo "<script language='javascript'>";
+    echo "alert('Non sei autorizzato ');";
+    echo "</script>";
+    header("Refresh:0; index.php", true, 303);
 }
-echo "</div>";
-echo "</div>";
-echo "</div>";
-
-include("footer.php");
 ?>

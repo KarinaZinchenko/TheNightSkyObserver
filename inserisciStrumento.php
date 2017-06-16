@@ -1,13 +1,24 @@
 <?php
+ob_start();
+?>
+<html>
+<head> <title>Inserimento nuovo strumento</title> </head>
+<body>
+<?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
+echo "<div class='contact-info'>";
+echo "<div class='panel-body'>";
+
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     if ($_SESSION["tipo"] == "amministratore") {
         if (!isset($_POST["invio"])) {
         ?>
-        <html>
-        <head>
-          <title>Inserimento nuovo strumento</title>
           <script type="text/javascript" language="javascript">
             // Si può fare ancora meglio con jquery
             function mostraCampi(x) {
@@ -73,45 +84,78 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
               campoRisoluzioneAngolare.value = roundedRisoluzioneAngolare;
             }
           </script>
-        </head>
-        <body>
-          <center>
-            <h1>Inserisci i dati dello strumento in questione:</h1>  <br><br>
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
-              <p>Nome: <input type="text" name="nome"></p>
-              <p>Note: <input type="text" name="note"></p>
-              <p>Tipo: <select name="tipo" onchange="mostraCampi(this)">
-                <option value="Telescopio">Telescopio</option>
-                <option value="Binocolo">Binocolo</option>
-              </select></p>
-              <p>Marca: <input type="text" name="marca"></p>
-              <p>Disponibilit&agrave;: <input type="text" name="disponibilita"></p>
-              <p class="telescopio">Campo focale: <input type="text" name="campoFocale"></p>
-              <p>Ingrandimenti: <input type="text" name="ingrandimenti"></p>
-              <p class="telescopio">Lunghezza focale: <input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()"></p>
-              <p class="telescopio">Montatura: <select type="text" name="montatura">
-                <option value="Equatoriale">Equatoriale</option>
-                <option value="Altazimutale">Altazimutale</option>
-                <option value="Dobson">Dobson</option>
-                <option value="Altro">Altro</option>
-              </select></p>
-              <p class="telescopio">Campo del cercatore: <input type="text" name="campoCercatore"></p>
-              <p class="telescopio">Tipo di telescopio: <select name="tipoTelescopio">
-                <option value="Rifrattore">Rifrattore</option>
-                <option value="Riflettore">Riflettore</option>
-                <option value="Catadiottrico">Catadiottrico</option>
-                <option value="Altro">Altro</option>
-              </select></p>
-              <p>Apertura (in millimetri): <input type="text" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()"></p>
-              <p class="telescopio">Apertura (in pollici): <input type="text" name="aperturaPollici" oninput="calcolaRisoluzioneAngolare()"></p>
-              <p class="telescopio">Focal Ratio: <input type="text" name="focalRatio" readonly></p>
-              <p class="telescopio">Risoluzione angolare: <input type="text" name="risoluzioneAngolare" readonly></p>
-              <p class="telescopio">Stima potere risolutivo: <input type="text" name="stimaPotereRisolutivo" readonly></p>
-              <input type="submit" name="invio" value="inserisci">
-            </form>
-          </center>
-        </body>
-        </html>
+
+        <h1>Inserisci i dati dello strumento</h1>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
+            <div class="row">
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Nome *</label><input type="text" name="nome">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Tipo *</label>
+                    <select id="soflow-color" name="tipo" onchange="mostraCampi(this)">
+                        <option value="Telescopio">Telescopio</option>
+                        <option value="Binocolo">Binocolo</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Marca *</label><input type="text" name="marca">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Disponibilit&agrave; *</label><input type="text" name="disponibilita">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Ingrandimenti</label><input type="text" name="ingrandimenti">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Note</label><textarea name="note"></textarea>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                    <label>Apertura mm</label><input type="text" name="aperturaMillimetri" oninput="calcolaFocalRatio(); calcolaStimaPotereRisolutivoI()">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Apertura "</label><input type="text" name="aperturaPollici" oninput="calcolaRisoluzioneAngolare()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Tipo di telescopio</label>
+                    <select id="soflow-color" name="tipoTelescopio">
+                        <option value="Rifrattore">Rifrattore</option>
+                        <option value="Riflettore">Riflettore</option>
+                        <option value="Catadiottrico">Catadiottrico</option>
+                        <option value="Altro">Altro</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Campo focale</label><input type="text" name="campoFocale">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Lunghezza focale</label><input type="text" name="lunghezzaFocale" oninput="calcolaFocalRatio()">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Montatura</label><input type="text" name="montatura">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Campo del cercatore</label><input type="text" name="campoCercatore">
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Focal Ratio</label><input type="text" name="focalRatio" readonly>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Stima potere risolutivo</label><input type="text" name="stimaPotereRisolutivo" readonly>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-3 form-group telescopio">
+                    <label>Risoluzione angolare</label><input type="text" name="risoluzioneAngolare" readonly>
+                </div>
+            </div>
+            <input id="contact-submit" class="btn" type="submit" name="invio" value="inserisci">
+        </form>
+
         <?php
         } else { // chiudo if per verificare se accedo alla pagina prima volta o se ho gia inserito dati
             $nome = "";
@@ -119,6 +163,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $tipo = "";
             $marca = "";
             $disponibilita = "";
+            $apertura = "";
             $campoFocale = "";
             $ingrandimenti = "";
             $lunghezzaFocale = "";
@@ -131,7 +176,10 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $risoluzioneAngolare = "";
             $stimaPotereRisolutivo = "";
             if ($_REQUEST["nome"] != "" & $_REQUEST["tipo"] != "" & $_REQUEST["marca"] != "" & $_REQUEST != ["disponibilita"]) {
-                /* Disponibilità è 0/1 (o true/false), non un numero ma va bene comunque
+                /* E se l'utente inserisce prima tutti i campi e poi il tipo di strumento? OK
+                   Ci sono tre aperture: una in millimetri, una in pollici una in ?
+                   Montatura non è un numero
+                   Disponibilità è 0/1 (o true/false), non un numero
                    Mettere anche conversione millimetri pollici (e viceversa)?
                 */
                 $nome = $_REQUEST["nome"];
@@ -139,6 +187,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $tipo = $_REQUEST["tipo"];
                 $marca = $_REQUEST["marca"];
                 $disponibilita = $_REQUEST["disponibilita"];
+                $apertura = $_REQUEST["apertura"];
                 $campoFocale = $_REQUEST["campoFocale"];
                 $ingrandimenti = $_REQUEST["ingrandimenti"];
                 $lunghezzaFocale = $_REQUEST["lunghezzaFocale"];
@@ -156,6 +205,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $tipo = nl2br(htmlentities($tipo, ENT_QUOTES, 'UTF-8'));
                 $marca = nl2br(htmlentities($marca, ENT_QUOTES, 'UTF-8'));
                 $disponibilita = nl2br(htmlentities($disponibilita, ENT_QUOTES, 'UTF-8'));
+                $apertura = nl2br(htmlentities($apertura, ENT_QUOTES, 'UTF-8'));
                 $campoFocale = nl2br(htmlentities($campoFocale, ENT_QUOTES, 'UTF-8'));
                 $ingrandimenti = nl2br(htmlentities($ingrandimenti, ENT_QUOTES, 'UTF-8'));
                 $lunghezzaFocale = nl2br(htmlentities($lunghezzaFocale, ENT_QUOTES, 'UTF-8'));
@@ -175,12 +225,13 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                   Nel caso volessimo usare PDO invece di questo mostro qui sopra
                 */
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
-                $stmt = $conn->prepare("INSERT INTO strumento(nome, note, tipo, marca, disponibilita, campo_focale, ingrandimenti, lunghezza_focale, montatura, focal_ratio, campo_cercatore, tipo_telescopio, apertura_millimetri, apertura_pollici, risoluzione_angolare, stima_potere_risolutivo) VALUES (:nome, :note, :tipo, :marca, :disponibilita, :campoFocale, :ingrandimenti, :lunghezzaFocale, :montatura, :focalRatio, :campoCercatore, :tipoTelescopio, :aperturaMillimetri, :aperturaPollici, :risoluzioneAngolare, :stimaPotereRisolutivo)");
+                $stmt = $conn->prepare("INSERT INTO strumento(nome, note, tipo, marca, disponibilita, apertura, campo_focale, ingrandimenti, lunghezza_focale, montatura, focal_ratio, campo_cercatore, tipo_telescopio, apertura_millimetri, apertura_pollici, risoluzione_angolare, stima_potere_risolutivo) VALUES (:nome, :note, :tipo, :marca, :disponibilita, :apertura, :campoFocale, :ingrandimenti, :lunghezzaFocale, :montatura, :focalRatio, :campoCercatore, :tipoTelescopio, :aperturaMillimetri, :aperturaPollici, :risoluzioneAngolare, :stimaPotereRisolutivo)");
                 $stmt->bindValue(":nome", $nome, PDO::PARAM_STR);
                 $stmt->bindValue(":note", $note, PDO::PARAM_NULL);
                 $stmt->bindValue(":tipo", $tipo, PDO::PARAM_STR);
                 $stmt->bindValue(":marca", $marca, PDO::PARAM_STR);
                 $stmt->bindValue(":disponibilita", $disponibilita, PDO::PARAM_INT);
+                $stmt->bindValue(":apertura", $apertura, PDO::PARAM_INT);
                 $stmt->bindValue(":aperturaMillimetri", $aperturaMillimetri, PDO::PARAM_INT);
                 $stmt->bindValue(":ingrandimenti", $ingrandimenti, PDO::PARAM_INT);
                 if ($tipo == "Binocolo") {
@@ -206,15 +257,19 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 }
                 $result = $stmt->execute();
                 if ($result) {
-                    echo "<script language='javascript'>";
-                    echo "alert('Inserimento effettuato');";
-                    echo "</script>";
-                    header("Refresh:0; url=prova-sessioni.php", true, 303);
+                ?>
+                    <script>
+                        swal({title:"Inserimento effettuato!",type:"success",showConfirmButton:false});
+                    </script>
+                    <?php
+                    header("Refresh:2; url=inserisciStrumento.php", true, 303);
                 } else {
-                    echo "<script language='javascript'>";
-                    echo "alert('Errore nella query');";
-                    echo "</script>";
-                    header("Refresh:0; url=inserisciStrumento.php", true, 303);
+                    ?>
+                    <script>
+                        swal({title:"Attenzione!",text:"errore nella query.",type:"warning",showConfirmButton:false});
+                    </script>
+                    <?php
+                    header("Refresh:2; url=inserisciStrumento.php", true, 303);
                 }
                 $conn = null;
                 $stmt = null;
@@ -230,22 +285,37 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 mysqli_close($conn);
                 */
             } else { //chiudo if per verificare che i campi siano stati inseriti
-                echo "<script language='javascript'>";
-                echo "alert('I campi nome, tipo, marca e disponibilità sono obbligatori');";
-                echo "</script>";
-                header("Refresh:0; url=inserisciStrumento.php", true, 303);
+                    ?>
+                <script>
+                    swal({title:"Attenzione!",text:"Tutti i campi obbligatori, contrassegnati da *, devono essere inseriti.",type:"warning",showConfirmButton:false});
+                </script>
+                <?php
+                header("Refresh:3; url=inserisciStrumento.php", true, 303);
             }
         }
     } else {
-        echo "<script language='javascript'>";
-        echo "alert('Non sei autorizzato ');";
-        echo "</script>";
-        header("Refresh:0; url=prova-sessioni.php", true, 303);
+                ?>
+        <script>
+            swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+        </script>
+        <?php
+        header("Refresh:2; url=profiloUtente.php", true, 303);
     }
 } else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
-}
 ?>
+    <script>
+        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+    </script>
+    <?php
+    header("Refresh:2; index.php", true, 303);
+}
+echo "</div>";
+echo "</div>";
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
+?>
+</body>
+</html>

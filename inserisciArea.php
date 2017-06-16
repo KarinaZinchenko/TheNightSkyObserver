@@ -1,30 +1,52 @@
 <?php
+ob_start();
+?>
+<html>
+<head> <title>Inserimento nuovo sito osservativo</title> </head>
+<body>
+<?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
+echo "<div class='contact-info'>";
+echo "<div class='panel-body'>";
+
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     if ($_SESSION["tipo"] == "amministratore") {
         if (!isset($_POST["invio"])) {
         ?>
-        <html>
-        <head>
-          <title>Inserimento nuovo sito osservativo </title>
-         </head>
-         <body>
-           <center>
-             <h1>Inserisci i dati del sito osservativo in questione:</h1>  <br><br>
+             <h1>Inserisci i dati del sito osservativo</h1>  <br>
              <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
-               Nome: <input type="text" name="nome"><br><br>
-               Note: <input type="text" name="note"><br><br>
-               Altitudine: <input type="text" name="altitudine"><br><br>
-               Latitudine: <input type="text" name="latitudine"><br><br>
-               Longitudine: <input type="text" name="longitudine"><br><br>
-               Qualit&agrave; cielo (Bortle): <input type="text" name="bortle"><br><br>
-               Qualit&agrave; cielo (SQM): <input type="text" name="sqm"><br><br>
-                 <input type="submit" name="invio" value="inserisci">
+                 <div class="row">
+                     <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                         <label>Nome *</label><input type="text" name="nome">
+                     </div>
+                     <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                         <label>Altitudine *</label><input type="number" name="altitudine">
+                     </div>
+                     <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                         <label>Latitudine *</label><input type="number" name="latitudine">
+                     </div>
+                     <div class="col-xs-6 col-sm-3 col-md-3 form-group">
+                         <label>Longitudine *</label><input type="number" name="longitudine">
+                     </div>
+
+                     <div class="col-xs-6 col-sm-4 col-md-4 form-group">
+                         <label>Qualit&agrave; cielo (Bortle)</label><input type="number" name="bortle">
+                     </div>
+                     <div class="col-xs-6 col-sm-4 col-md-4 form-group">
+                         <label>Qualit&agrave; cielo (SQM)</label><input type="number" name="sqm">
+                     </div>
+                     <div class="col-xs-12 col-sm-4 col-md-4 form-group">
+                         <label>Note</label><textarea name="note"></textarea>
+                     </div>
+                 </div>
+                         <input id="contact-submit" class="btn" type="submit" name="invio" value="inserisci">
              </form>
-           </center>
-         </body>
-         </html>
         <?php
         } else {// chiudo if per verificare se accedo alla pagina prima volta o se ho gia inserito dati
             $nome = "";
@@ -65,12 +87,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 if (empty($sqm)) {
                     $sqm = null;
                 }
-                /*
-                $sql = "INSERT INTO areageografica(nome, note, altitudine, latitudine, longitudine, qualita_cielo_bortle, qualita_cielo_sqm) VALUES ('".addslashes($nome)."','".addslashes($note)."',".addslashes($altitudine).",".addslashes($latitudine).",".addslashes($longitudine).",".addslashes($bortle).",".addslashes($sqm).");";
-                */
-                /*
-                  Nel caso volessimo usare PDO invece di questo mostro qui sopra
-                */
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
                 $stmt = $conn->prepare("INSERT INTO areageografica(nome,note,altitudine, latitudine, longitudine, qualita_cielo_bortle, qualita_cielo_sqm) VALUES (:nome, :note, :altitudine, :latitudine, :longitudine, :bortle, :sqm)");
                 $stmt->bindValue(":nome", $nome, PDO::PARAM_STR);
@@ -82,49 +98,58 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $stmt->bindValue(":sqm", $sqm, PDO::PARAM_INT);
                 $result = $stmt -> execute();
                 if ($result) {
-                    echo "<script language='javascript'>";
-                    echo "alert('Inserimento effettuato');";
-                    echo "</script>";
-                    header("Refresh:0; url=prova-sessioni.php", true, 303);
+                ?>
+                    <script>
+                        swal({title:"Inserimento effettuato!",type:"success",showConfirmButton:false});
+                    </script>
+                    <?php
+                    header("Refresh:2; url=inserisciArea.php", true, 303);
                 } else {
-                    echo "<script language='javascript'>";
-                    echo "alert('Errore nella query');";
-                    echo "</script>";
-                    header("Refresh:0; url=inserisciArea.php", true, 303);
+                    ?>
+                    <script>
+                        swal({title:"Attenzione!",text:"errore nella query.",type:"warning",showConfirmButton:false});
+                    </script>
+                    <?php
+                    header("Refresh:2; url=inserisciArea.php", true, 303);
                 }
                 $conn = null;
                 $stmt = null;
-                /*
-                if (mysqli_query($conn, $sql)) {
-                    echo "<script language='javascript'>";
-                    echo "alert('Inserimento effettuato');";
-                    echo "</script>";
-                    header("Refresh:0; url=prova-sessioni.php", true, 303);
-                } else {
-                    die("Errore nella query: ". $sql ."\n" . mysqli_error($conn));
-                }
-                mysqli_close($conn);
-                */
+
             } else { //chiudo if per verificare che i campi siano stati inseriti
-                echo "<script language='javascript'>";
-                echo "alert('tutti i campi tranne note, qualità cielo Bortle e qualità cielo SQM sono obbligatori');";
-                echo "</script>";
-                header("Refresh:0; url=inserisciArea.php", true, 303);
+                    ?>
+                <script>
+                    swal({title:"Attenzione!",text:"Tutti i campi obbligatori, contrassegnati da *, devono essere inseriti.",type:"warning",showConfirmButton:false});
+                </script>
+                <?php
+                header("Refresh:3; url=inserisciArea.php", true, 303);
             }
         }
     } else {
-        echo "<script language='javascript'>";
-        echo "alert('Non sei autorizzato ');";
-        echo "</script>";
-        header("Refresh:0; url=prova-sessioni.php", true, 303);
+                    ?>
+        <script>
+            swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+        </script>
+        <?php
+        header("Refresh:2; url=profiloUtente.php", true, 303);
     }
 } else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
-}
 ?>
+    <script>
+        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+    </script>
+    <?php
+    header("Refresh:2; index.php", true, 303);
+}
+echo "</div>";
+echo "</div>";
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
+?>
+</body>
+</html>
 
 <?php
 function conversionToBortle ($sqm){
@@ -156,4 +181,4 @@ function conversionToBortle ($sqm){
         return 9;
     }
 }
-?>
+?>

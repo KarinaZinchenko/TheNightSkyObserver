@@ -1,21 +1,24 @@
+<head>
+    <title>Vista osservazioni</title>
+</head>
 <?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     # if ($_SESSION["tipo"] == "amministratore") {
         # if (!isset($_POST["invio"])) {
         ?>
-        <html>
-        <head>
-          <title>Vista osservazioni</title>
-         </head>
-         <body>
-           <center>
-             <h1>Osservazioni compiute</h1><br><br>
-             <table>
-               <thead>
+        <div class="featured-heading">
+             <h1>Osservazioni</h1><br>
+            <table class="table">
+                <thead class="thead-default">
                  <tr>
-                   <th>Oggetto</th>
+                   <th>Osservazione</th>
                    <th>Stato</th>
                  </tr>
                </thead>
@@ -49,14 +52,21 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     echo "</tbody>";
                 }
                 ?>
-           </center>
-         </body>
-         </html>
+           </table>
+         </div>
+
         <?php
-} else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
+} else {?>
+    <script>
+        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+    </script>
+    <?php
+    header("Refresh:2; index.php", true, 303);
+
 }
-?>
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
+?>

@@ -1,6 +1,20 @@
+<head>
+    <title>Vista osservazione</title>
+    <script>
+        function printPage() {
+            window.print();
+        }
+    </script>
+</head>
+
 <?php
 session_start();
 include("config.php");
+include("header.php");
+include("navbar.php");
+echo "<div class='container'>";
+echo "<div class='row-fluid'>";
+echo "<div class='span10 offset1'>";
 if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     # if ($_SESSION["tipo"] == "amministratore") {
         # if (!isset($_POST["invio"])) {
@@ -34,20 +48,10 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         $nomeUtente = $row['nome'];
         $cognomeUtente = $row['cognome'];
         ?>
-        <html>
-        <head>
-          <title>Vista osservazione</title>
-          <script>
-              function printPage() {
-                  window.print();
-              }
-         </script>
-         </head>
-         <body>
-           <center>
-             <h1>Dettagli osservazione</h1><br><br>
-             <table>
-               <thead>
+        <div class="featured-heading">
+             <h1>Dettagli osservazione</h1><br>
+            <table class="table">
+                <thead class="thead-default">
                  <tr>
                    <th>Categoria</th>
                    <th>Trasparenza</th>
@@ -76,9 +80,11 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 </tr>
               </tbody>
             </table>
-            <h2>Oggetti osservati</h2>
-            <table>
-              <thead>
+            <br>
+            <h2 id="titolo2">Oggetti osservati</h2>
+            <br>
+            <table class="table">
+                <thead class="thead-default">
                 <tr>
                   <th>Stato</th>
                   <th>Rating</th>
@@ -100,7 +106,8 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                   LEFT JOIN strumento AS s ON d_oss.id_strumento = s.id
                   LEFT JOIN oculare AS o ON (d_oss.id_oculare IS NOT NULL AND d_oss.id_oculare=o.id)
                   LEFT JOIN filtro_altro AS f ON (d_oss.id_filtro IS NOT NULL AND d_oss.id_filtro=f.id)
-                  WHERE d_oss.id_osservazioni = :idOsservazione");
+                  WHERE d_oss.id_osservazioni = :idOsservazione
+                  ORDER BY d_oss.ora_inizio ASC");
                 $stmt->bindValue(":idOsservazione", $idOsservazione, PDO::PARAM_INT);
                 $result = $stmt->execute();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -112,7 +119,12 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<td>". $row['stato'] ."</td>";
                         echo "<td>". $row['rating'] ."</td>";
                         echo "<td>". $row['descrizione'] ."</td>";
-                        echo "<td>". $row['immagine'] ."</td>";
+                        if(file_exists($row['immagine'])){
+                            echo "<td><a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a></td>";
+                        }
+                        else{
+                            echo "<td><img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>"." </td>";
+                        }
                         echo "<td>". $row['note'] ."</td>";
                         echo "<td>". $row['ora_inizio'] ."</td>";
                         echo "<td>". $row['ora_fine'] ."</td>";
@@ -126,15 +138,22 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 }
                 ?>
             </table>
-           <button onclick="printPage()">Stampa</button>
-           </center>
-         </body>
-         </html>
+            <br>
+            <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
+           </div>
+
         <?php
-} else {
-    echo "<script language='javascript'>";
-    echo "alert('Non sei autorizzato ');";
-    echo "</script>";
-    header("Refresh:0; index.php", true, 303);
+} else {?>
+    <script>
+        swal({title:"Oops...!",text:"Non sei autorizzato.",type:"error",showConfirmButton:false});
+    </script>
+    <?php
+    header("Refresh:2; index.php", true, 303);
+
 }
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
+include("footer.php");
 ?>
