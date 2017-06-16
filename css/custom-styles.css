@@ -413,3 +413,16 @@ input[type="file"] {
     display: block;
 }
 
+#contact-info-ricerca{
+    padding: 0 !important; 
+    background: inherit !important; 
+    border-top: 0 !important;
+}
+
+#panel-body-ricerca{
+	padding: 0 !important;
+}
+
+#label-ricerca {
+	color: #d3b483 !important;
+}
