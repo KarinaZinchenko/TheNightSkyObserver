@@ -1,8 +1,16 @@
 <head>
     <title>Vista osservazioni programmate</title>
-     <script>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script>
         function printPage() {
             window.print();
+        }
+
+        function toggleTab(elem) {
+          var id = $(elem).attr("id");
+          var number = id.split("_")[1];
+          var selected = "tab_" + number;
+          $('#' + selected).toggle();
         }
     </script>
 </head>
@@ -20,7 +28,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         ?>
         <div class="featured-heading">
              <h1>Osservazioni programmate</h1><br>
-            <table class="table">
+            <!--<table class="table">
                 <thead class="thead-default">
                  <tr>
                    <th>Descrizione</th>
@@ -36,7 +44,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                      <th>Sito</th>
                      <th>Osservatore</th>
                  </tr>
-               </thead>
+               </thead>-->
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
 
@@ -68,7 +76,33 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $row_count = $stmt->rowCount();
 
                 if ($row_count > 0) {
-                    echo "<tbody>";
+                    $counter = 1;
+                    foreach ($rows as $row) {
+                        echo "<p><img src=\"http://lorempixel.com/40/40/cats/\" id=\"icon_$counter\" onclick=\"toggleTab(this)\" />";
+                        echo $row['oggetto'];
+                        echo "</p>";
+                        echo "<div style=\"display: none\" id=\"tab_$counter\">";
+                        echo "<p>Descrizione: ". $row['descrizione'] ."</p>";
+                        echo "<p>Note: ". $row['note'] ."</p>";
+                        echo "<p>Ora inizio: ". $row['ora_inizio'] ."</p>";
+                        echo "<p>Ora fine: ". $row['ora_fine'] ."</p>";
+                        if (file_exists($row['immagine'])) {
+                            echo "<a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a>";
+                        } else {
+                            echo "<img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>";
+                        }
+                        echo "</p>";
+                        echo "<p>Oggetto celeste: ". $row['oggetto'] ."</p>";
+                        echo "<p>Strumento: ". $row['strumento'] ."</p>";
+                        echo "<p>Oculare: ". $row['oculare'] ."</p>";
+                        echo "<p>Filtro: ". $row['filtro'] ."</p>";
+                        echo "<p>Categoria: ". $row['categoria'] ."</p>";
+                        echo "<p>Area geografica: ". $row['area'] ."</p>";
+                        echo "<p>Autore: ". $row['nome'].' '. $row['cognome'] ."</p>";
+                        echo "</div>";
+                        $counter = $counter + 1;
+                    }
+                    /*echo "<tbody>";
                     foreach ($rows as $row) {
                         echo "<tr>";
                         # Devo passare l'ID per pescarlo come GET nell'altra pagina, può dare problemi?
@@ -76,10 +110,9 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<td>". $row['note'] ."</td>";
                         echo "<td>". $row['ora_inizio'] ."</td>";
                         echo "<td>". $row['ora_fine'] ."</td>";
-                        if(file_exists($row['immagine'])){
+                        if (file_exists($row['immagine'])) {
                             echo "<td><a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a></td>";
-                        }
-                        else{
+                        } else {
                             echo "<td><img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>"." </td>";
                         }
                         echo "<td>". $row['oggetto'] ."</td>";
@@ -91,10 +124,10 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<td>". $row['nome'].' '. $row['cognome'] ."</td>";
                         echo "</tr>";
                     }
-                    echo "</tbody>";
+                    echo "</tbody>";*/
                 }
                 ?>
-         </table>
+         <!--</table>-->
          <br>
           <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
          </div>
