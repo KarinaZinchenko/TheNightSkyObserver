@@ -45,6 +45,31 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                      <th>Osservatore</th>
                  </tr>
                </thead>-->
+              <div id ="contact-info-ricerca" class="contact-info">
+                <div id="panel-body-ricerca" class="panel-body">
+                  <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                    <div class="col-xs-12 col-sm-2 col-md-2 form-group">
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-3 form-group">
+                        <label  id="label-ricerca">Valore da cercare</label>
+                        <input style="margin-bottom: 0; margin-right:0; min-height: 34px;" type="text" name="valore_ricerca" placeholder="Cosa vuoi cercare?">
+                    </div>
+                  <div class="col-xs-12 col-sm-3 col-md-3 form-group">
+                      <label id="label-ricerca">Campo di ricerca</label>
+                      <select style="margin-bottom: 0;" class="soflow-color" name="scelta_ricerca">
+                          <option value="ogg.nome">Nome oggetto </option>
+                          <option value="s.nome">Nome osservatore </option>
+                          <option value="an.nome">Area geografica </option>
+                      </select>
+                  </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2 form-group" style="top:20px;">
+                    <input id="contact-submit" class="btn" type="submit" name="invio_ricerca" value="Cerca">
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2 form-group">
+                    </div>
+                </form>
+                </div>
+            </div>
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
 
@@ -53,7 +78,30 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                                         WHERE d_oss.stato = :stato
                                         ");
                 */
-                $stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio, d_oss.immagine , ogg.nome AS oggetto, s.nome AS strumento, o.nome AS oculare, f.nome AS filtro, oss.categoria AS categoria, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
+                if (isset($_POST["invio_ricerca"]))
+                {
+                    $condizione=$_POST["scelta_ricerca"];
+                    $valore=$_POST["valore_ricerca"];
+                    $aux=$valore;
+                    $valore=strtoupper(substr($valore, 0, 1)).substr($aux, 1);
+                    echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
+
+                    $stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio, d_oss.immagine , ogg.nome AS oggetto, s.nome AS strumento, o.nome AS oculare, f.nome AS filtro, oss.categoria AS categoria, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
+                                        FROM datiosservazione AS d_oss
+                                        JOIN oggettoceleste AS ogg ON ogg.id=d_oss.id_oggettoceleste
+                                        JOIN strumento AS s ON s.id=d_oss.id_strumento
+                                        LEFT JOIN oculare AS o ON (d_oss.id_oculare IS NOT NULL AND d_oss.id_oculare=o.id)
+                                        LEFT JOIN filtro_altro AS f ON (d_oss.id_filtro IS NOT NULL AND d_oss.id_filtro=f.id)
+                                        LEFT JOIN
+                                        (
+                                             osservazioni AS oss
+                                             JOIN areageografica AS ar ON ar.id=oss.id_area_geografica
+                                             JOIN anagrafica AS an ON an.numero_socio=oss.id_anagrafica
+                                        )ON oss.id=d_oss.id_osservazioni
+                                        WHERE d_oss.stato = :stato AND LOWER(".$condizione.")=LOWER('".$valore."') ORDER BY d_oss.ora_inizio ASC ");
+                    $ricerca=true;
+                } else {
+                    $stmt = $conn->prepare("SELECT d_oss.descrizione, d_oss.note, d_oss.ora_fine, d_oss.ora_inizio, d_oss.immagine , ogg.nome AS oggetto, s.nome AS strumento, o.nome AS oculare, f.nome AS filtro, oss.categoria AS categoria, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
                                         FROM datiosservazione AS d_oss
                                         JOIN oggettoceleste AS ogg ON ogg.id=d_oss.id_oggettoceleste
                                         JOIN strumento AS s ON s.id=d_oss.id_strumento
@@ -68,7 +116,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                                         WHERE d_oss.stato = :stato
                                         ORDER BY d_oss.ora_inizio ASC
                                         ");
-
+                }
 
                 # Salvo in una variabile se la query può non andare a buon fine ma può non andare a buon fine?
                 $result = $stmt->execute(array(':stato' => 'pianificata'));
@@ -79,7 +127,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     $counter = 1;
                     foreach ($rows as $row) {
                         echo "<p><img src=\"http://lorempixel.com/40/40/cats/\" id=\"icon_$counter\" onclick=\"toggleTab(this)\" />";
-                        echo $row['oggetto'];
+                        echo "Nome oggetto: ". $row['oggetto'] .". Area geografica: ". $row['area']. ". Autore: ". $row['nome'].' '. $row['cognome'];
                         echo "</p>";
                         echo "<div style=\"display: none\" id=\"tab_$counter\">";
                         echo "<p>Descrizione: ". $row['descrizione'] ."</p>";
@@ -97,8 +145,8 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<p>Oculare: ". $row['oculare'] ."</p>";
                         echo "<p>Filtro: ". $row['filtro'] ."</p>";
                         echo "<p>Categoria: ". $row['categoria'] ."</p>";
-                        echo "<p>Area geografica: ". $row['area'] ."</p>";
-                        echo "<p>Autore: ". $row['nome'].' '. $row['cognome'] ."</p>";
+                        // echo "<p>Area geografica: ". $row['area'] ."</p>";
+                        // echo "<p>Autore: ". $row['nome'].' '. $row['cognome'] ."</p>";
                         echo "</div>";
                         $counter = $counter + 1;
                     }
@@ -125,6 +173,9 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "</tr>";
                     }
                     echo "</tbody>";*/
+                }
+                if ($row_count <= 0 && $ricerca) {
+                    echo "<h3 style='color:#d3b483;'>Nessun risultato ottenuto  per '".$valore."'</h3><br>";
                 }
                 ?>
          <!--</table>-->
