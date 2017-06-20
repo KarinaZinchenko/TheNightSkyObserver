@@ -27,8 +27,9 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                   <div class="col-xs-12 col-sm-3 col-md-3 form-group">
                       <label id="label-ricerca">Campo di ricerca</label>
                       <select style="margin-bottom: 0;" class="soflow-color" name="scelta_ricerca">
-                          <option value="id_osservazioni">ID </option>
-                          <option value="stato">Stato</option>
+                          <option value="an.cognome">Cognome Osservatore </option>
+                          <option value="d_oss.stato">Stato</option>
+                          <option value="ar.nome">Luogo osservativo</option>
                       </select>
                   </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 form-group" style="top:20px;">
@@ -56,7 +57,15 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     $aux = $valore;
                     $valore = strtoupper(substr($valore, 0, 1)).substr($aux, 1);
                     echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
-                    $stmt = $conn->prepare("SELECT DISTINCT stato, id_osservazioni FROM datiosservazione WHERE  LOWER(".$condizione.")=LOWER('".$valore."');");
+                    $stmt = $conn->prepare("SELECT DISTINCT d_oss.id_osservazioni, d_oss.stato, d_oss.ora_inizio, ar.nome AS area, an.nome AS nome, an.cognome AS cognome
+                        FROM datiosservazione AS d_oss
+                        JOIN
+                            (
+                            osservazioni AS oss
+                            JOIN areageografica AS ar ON ar.id=oss.id_area_geografica
+                            JOIN anagrafica AS an ON an.numero_socio=oss.id_anagrafica
+                            ) ON oss.id=d_oss.id_osservazioni
+                            WHERE LOWER(".$condizione.")=LOWER('".$valore."');");
                     $ricerca = true;
                 } else {
                     $ricerca = false;

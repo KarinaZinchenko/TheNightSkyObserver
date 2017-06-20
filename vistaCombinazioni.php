@@ -16,21 +16,111 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
     $telescopi = array();
     $oculari = array();
     $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
-    $stmt = $conn->prepare("SELECT * FROM strumento WHERE tipo = \"Telescopio\" AND disponibilita = 1");
-    $result = $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($rows as $row) {
-        $telescopi[] = $row;
-    }
+if(isset($_POST["invio_ricerca"]))
+                { if($_POST["scelta_ricerca"]=="nome_telescopio")
+                  {
+                   $condizione=$_POST["scelta_ricerca"];
+                   $valore=$_POST["valore_ricerca"];
+                   $aux=$valore;
+                   $valore=strtoupper(substr($valore, 0,1)).substr($aux,1);
+                   echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
+                   $ricerca=true;
+                   $stmt = $conn->prepare("SELECT * FROM strumento WHERE tipo = \"Telescopio\" AND disponibilita = 1 AND nome='".$valore."';");
+                   $result = $stmt->execute();
+                   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                   foreach ($rows as $row) {
+                                    $telescopi[] = $row;
+                                             }
+
+                                             $stmt = $conn->prepare("SELECT * FROM oculare WHERE disponibilita = 1");
+                                             $result = $stmt->execute();
+                                          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                       foreach ($rows as $row) {
+                                                   $oculari[] = $row;
+                                                               }
+                
+                }
+
+                if($_POST["scelta_ricerca"]=="nome_oculare")
+                  {
+                   $condizione=$_POST["scelta_ricerca"];
+                   $valore=$_POST["valore_ricerca"];
+                   $aux=$valore;
+                   $valore=strtoupper(substr($valore, 0,1)).substr($aux,1);
+                   echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
+                   $ricerca=true;
+                   $stmt = $conn->prepare("SELECT * FROM oculare WHERE disponibilita = 1 AND nome='".$valore."';");
+                     $result = $stmt->execute();
+                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                       foreach ($rows as $row) {
+                          $oculari[] = $row;
+                              }
+
+                              $stmt = $conn->prepare("SELECT * FROM strumento WHERE tipo = \"Telescopio\" AND disponibilita = 1");
+                               $result = $stmt->execute();
+                   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                   foreach ($rows as $row) {
+                                    $telescopi[] = $row;
+                                             }
+                
+                }
+
+                   $ricerca=true;
+             }
+                else
+                {
+                $stmt = $conn->prepare("SELECT * FROM strumento WHERE tipo = \"Telescopio\" AND disponibilita = 1");
+     $result = $stmt->execute();
+                   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                   foreach ($rows as $row) {
+                                    $telescopi[] = $row;
+                                             }
+    
     $stmt = $conn->prepare("SELECT * FROM oculare WHERE disponibilita = 1");
     $result = $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($rows as $row) {
         $oculari[] = $row;
     }
+                $ricerca=false;
+                }
+
+    
     ?>
     <div class="featured-heading">
-        <h1>Tabella combinazioni</h1><br>
+        <h1>Tabella combinazioni</h1>
+     <div id ="contact-info-ricerca" class="contact-info"> 
+              <div id="panel-body-ricerca" class="panel-body">
+                 <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">  
+                  <div class="col-xs-12 col-sm-2 col-md-2 form-group">                    
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-3 form-group">
+                        <label  id="label-ricerca">Valore da cercare</label>
+                        <input style="margin-bottom: 0; margin-right:0; min-height: 34px;" type="text" name="valore_ricerca" placeholder="Cosa vuoi cercare?">
+                    </div> 
+                  <div class="col-xs-12 col-sm-3 col-md-3 form-group">
+                      <label id="label-ricerca">Campo di ricerca</label>
+                      <select style="margin-bottom: 0;" class="soflow-color" name="scelta_ricerca">
+                          <option value="nome_telescopio">Nome telescopio </option>
+                          <option value="nome_oculare">Nome Oculare </option>
+                       
+                      </select>
+                  </div>                     
+                    <div class="col-xs-12 col-sm-2 col-md-2 form-group" style="top:20px;">
+                    <input id="contact-submit" class="btn" type="submit" name="invio_ricerca" value="Cerca">
+                    </div> 
+                    <div class="col-xs-12 col-sm-2 col-md-2 form-group">                    
+                    </div>
+                </form>                
+                </div>
+            </div>
+        <br>
+        <?php
+  if((empty($oculari)|| empty($telescopi)) && $ricerca)
+                      {  
+                             echo "<h3 style='color:#d3b483;'>Nessun risultato ottenuto  per '".$valore."'</h3><br>";
+                        }else{
+?>
         <table class="table">
             <thead class="thead-default">
             <tr>
@@ -60,6 +150,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         </table>
     </div>
 <?php
+   }
 }  else
 {?>
     <script>

@@ -61,12 +61,13 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                    $aux=$valore;
                    $valore=strtoupper(substr($valore, 0,1)).substr($aux,1);
                    echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
-
+                   $ricerca=true;
                 $stmt = $conn->prepare("SELECT numero_socio, nome, cognome, data_nascita FROM anagrafica WHERE ".$condizione."='".$valore."';");
                 }
                 else
                 {
                 $stmt = $conn->prepare("SELECT numero_socio, nome, cognome, data_nascita FROM anagrafica");
+                $ricerca=false;
                 }
 
                 # Salvo in una variabile se la query può non andare a buon fine ma può non andare a buon fine?
@@ -84,10 +85,18 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                         echo "<td>". $row['data_nascita'] ."</td>";
                         echo "</tr>";
                     }
+                    
                     echo "</tbody>";
                 }
+
                 ?>
             </table>
+            <?php
+            if($row_count <= 0 && $ricerca)
+                      {  
+                             echo "<h3 style='color:#d3b483;'>Nessun risultato ottenuto  per '".$valore."'</h3><br>";
+                        }
+                        ?>
         </div>
         <?php
 } else
