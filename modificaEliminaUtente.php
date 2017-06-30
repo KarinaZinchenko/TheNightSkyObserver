@@ -68,6 +68,11 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
                      $regolare="";
                      $amministratore="";
                      $insolvente="";
+                     if ($tupla['tipo'] != "amministratore" && strtotime($tupla['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
+                         $stmt = $conn->prepare("UPDATE anagrafica SET tipo='insolvente' WHERE numero_socio=".$tupla['numero_socio'].";");
+                         $result = $stmt->execute();
+                         $tupla['tipo']="insolvente";
+                     }
                      if($tupla['tipo']=="regolare")
                      {$regolare='selected="selected"';}
                      elseif ($tupla["tipo"]=="amministratore"){$amministratore='selected="selected"';}
