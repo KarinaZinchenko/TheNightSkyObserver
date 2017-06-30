@@ -1,14 +1,18 @@
 <head>
 	<title>Profilo Utente</title>
-	<script src="/js/jquery-1.9.1.js"></script>
-	<script>
-			function toggleTab(elem) {
-				var id = $(elem).attr("id");
-				var number = id.split("_")[1];
-				var selected = "tab_" + number;
-				$('#' + selected).toggle();
-			}
-	</script>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script>
+        function printPage() {
+            window.print();
+        }
+
+        function toggleTab(elem) {
+            var id = $(elem).attr("id");
+            var number = id.split("_")[1];
+            var selected = "tab_" + number;
+            $('#' + selected).toggle();
+        }
+    </script>
 </head>
 
 <?php
@@ -86,38 +90,55 @@ if (isset($_SESSION["autenticato"])) {
                 <th>Note</th>
               </tr>
             </thead>-->
+
+
         <?php
         // echo "<tbody>";
         $counter = 1;
+
         foreach ($rows as $row) {
             // echo "<tr>";
-            echo "<p><a class='btn btn-default' href='modificaEliminaOsservazioneDaProfiloUtente.php?idOss=".$row['idOss']."&idOgg=".$row['idOgg']."' style='margin-bottom: 2px;'><em class='fa fa-pencil'></em></a>";
-            echo "<img src=\"http://lorempixel.com/40/40/cats/\" id=\"icon_$counter\" onclick=\"toggleTab(this)\" />";
-            echo $row['oggetto'];
+            echo "<p id='p-open' style='padding-left: 275px;'>";
+            //echo "<div class='col-lg-2'></div>";
+            //echo "<div class='col-lg-10'>";
+            //echo "<p id='p-open' style=' padding-left: 40px;'>";
+            echo "<a class='btn btn-default' href='modificaEliminaOsservazioneDaProfiloUtente.php?idOss=".$row['idOss']."&idOgg=".$row['idOgg']."' style='margin-bottom: 2px;'><em class='fa fa-pencil'></em></a>";
+            echo "<a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a>";
+            echo "<label id=\"label-open\">Oggetto celeste:</label> ". $row['oggetto'];
             echo "</p>";
+            echo "<div id='div-open' style='padding-left: 357px;'>";
+            //echo "<div id='div-open' style='padding-left: 89px;'>";
             echo "<div style=\"display: none\" id=\"tab_$counter\">";
-            echo "<p>Stato: ". $row['stato'] ."</p>";
+            echo "<p><label id=\"label-open\">Stato:</label>". $row['stato'] ."</p>";
             // echo "<p>Rating: ". $row['rating'] ."</p>";
-            echo "<p>Descrizione: ". $row['descrizione'] ."</p>";
-            echo "<p>Immagine: ";
+            echo "<p><label id=\"label-open\">Descrizione:</label>". $row['descrizione'] ."</p>";
+            echo "<p><label id=\"label-open\">Immagine:</label>";
             if (file_exists($row['immagine'])) {
                 echo "<a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a>";
             } else {
                 echo "<img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>";
             }
             echo "</p>";
-            echo "<p>Note: ". $row['note'] ."</p>";
-            echo "<p>Ora inizio: ". $row['ora_inizio'] ."</p>";
-            echo "<p>Ora fine: ". $row['ora_fine'] ."</p>";
-            echo "<p>Strumento: ". $row['strumento'] ."</p>";
-            echo "<p>Oculare: ". $row['oculare'] ."</p>";
-            echo "<p>Filtro: ". $row['filtro'] ."</p>";
+            echo "<p><label id=\"label-open\">Note:</label> ". $row['note'] ."</p>";
+            echo "<p><label id=\"label-open\">Ora inizio:</label> ". $row['ora_inizio'] ."</p>";
+            echo "<p><label id=\"label-open\">Ora fine:</label> ". $row['ora_fine'] ."</p>";
+            echo "<p><label id=\"label-open\">Strumento:</label> ". $row['strumento'] ."</p>";
+            echo "<p><label id=\"label-open\">Oculare:</label> ". $row['oculare'] ."</p>";
+            echo "<p><label id=\"label-open\">Filtro:</label> ". $row['filtro'] ."</p>";
+            echo "</div>";
             echo "</div>";
             $counter = $counter + 1;
+
+
         }
+
         // echo "</tbody>";
         // echo "</table>";
-        echo "</div>";
+        ?>
+        <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
+
+        </div>
+        <?php
         } else {
 			?>
         <div class="featured-heading">

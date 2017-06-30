@@ -1,5 +1,18 @@
 <head>
     <title>Vista soci</title>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script>
+        function printPage() {
+            window.print();
+        }
+
+        function toggleTab(elem) {
+            var id = $(elem).attr("id");
+            var number = id.split("_")[1];
+            var selected = "tab_" + number;
+            $('#' + selected).toggle();
+        }
+    </script>
 </head>
 <?php
 session_start();
@@ -43,15 +56,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
 			</div>
            <br>
            <br>
-            <table class="table">
-                <thead class="thead-default">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Numero socio</th>
-                        <th>Data di nascita</th>
-                    </tr>
-                </thead>
+
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
                 if(isset($_POST["invio_ricerca"]))
@@ -62,11 +67,11 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                    $valore=strtoupper(substr($valore, 0,1)).substr($aux,1);
                    echo "<h3 style='color:#d3b483;'>Risultati per '".$valore."'</h3><br>";
                    $ricerca=true;
-                $stmt = $conn->prepare("SELECT numero_socio, nome, cognome, data_nascita FROM anagrafica WHERE ".$condizione."='".$valore."';");
+                $stmt = $conn->prepare("SELECT * FROM anagrafica WHERE ".$condizione."='".$valore."';");
                 }
                 else
                 {
-                $stmt = $conn->prepare("SELECT numero_socio, nome, cognome, data_nascita FROM anagrafica");
+                $stmt = $conn->prepare("SELECT * FROM anagrafica");
                 $ricerca=false;
                 }
 
@@ -75,22 +80,37 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $row_count = $stmt->rowCount();
                 if ($row_count > 0) {
-                    echo "<tbody>";
+                    $counter = 1;
                     foreach ($rows as $row) {
-                        echo "<tr>";
+                        echo "<div id='p-open' class='col-lg-12'>";
                         # Devo passare l'ID per pescarlo come GET nell'altra pagina, può dare problemi?
-                        echo "<td>". $row['nome'] ."</td>";
-                        echo "<td>". $row['cognome'] ."</td>";
-                        echo "<td>". $row['numero_socio'] ."</td>";
-                        echo "<td>". $row['data_nascita'] ."</td>";
-                        echo "</tr>";
+                        echo "<div class='row' style=' padding-left: 30px; margin-left: 0'>";
+                        echo "<div class='col-lg-3'></div>";
+                        echo "<div class='col-lg-3' style=' padding-bottom: 10px;'><a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a><label id=\"label-open\">Nome:</label> ". $row['nome'] ."</div>";
+                        echo "<div class='col-lg-3' id='div-col'><label id=\"label-open\"> Cognome:</label> ". $row['cognome']. "</div>";
+                        echo "</div>";
+                        echo "<div id='div-open' style='padding-left: 310px;'>";
+                        echo "<div style=\"display: none\" id=\"tab_$counter\">";
+                        echo "<p><label id=\"label-open\"> Numero socio:</label> ". $row['numero_socio']."</p>";
+                        echo "<p><label id=\"label-open\"> Data di nascita:</label> ". $row['data_nascita']."</p>";
+                        if ($_SESSION["tipo"] == "amministratore"){
+                            echo "<p><label id=\"label-open\"> Data di scdenza tessera:</label> ". $row['scadenza_tessera']."</p>";
+                            echo "<p><label id=\"label-open\"> Tipo:</label> ". $row['tipo']."</p>";
+                        }
+                        echo "<br>";
+                        echo "</div>";
+
+                        echo "</div>";
+                        echo "</div>";
+                        $counter = $counter + 1;
+
                     }
                     
-                    echo "</tbody>";
+
                 }
 
                 ?>
-            </table>
+
             <?php
             if($row_count <= 0 && $ricerca)
                       {  

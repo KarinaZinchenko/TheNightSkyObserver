@@ -58,8 +58,8 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                       <label id="label-ricerca">Campo di ricerca</label>
                       <select style="margin-bottom: 0;" class="soflow-color" name="scelta_ricerca">
                           <option value="ogg.nome">Nome oggetto </option>
-                          <option value="s.nome">Nome osservatore </option>
-                          <option value="an.nome">Area geografica </option>
+                          <option value="an.nome">Nome osservatore </option>
+                          <option value="ar.nome">Area geografica </option>
                       </select>
                   </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 form-group" style="top:20px;">
@@ -70,6 +70,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 </form>
                 </div>
             </div>
+            <br>
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
 
@@ -126,27 +127,40 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 if ($row_count > 0) {
                     $counter = 1;
                     foreach ($rows as $row) {
-                        echo "<p><img src=\"http://lorempixel.com/40/40/cats/\" id=\"icon_$counter\" onclick=\"toggleTab(this)\" />";
-                        echo "Nome oggetto: ". $row['oggetto'] .". Area geografica: ". $row['area']. ". Autore: ". $row['nome'].' '. $row['cognome'];
-                        echo "</p>";
+                        //echo "<div class='col-lg-1'></div>";
+                        echo "<div id='p-open' class='col-lg-12'>";
+                        //echo "<p id='p-open'>";
+                        //echo "<a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a>";
+                        echo "<div class='row' style=' padding-left: 30px; margin-left: 0'>";
+                        echo "<div class='col-lg-4' style=' padding-bottom: 10px;'><a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a><label id=\"label-open\">Nome oggetto:</label> ". $row['oggetto'] ."</div>";
+                        echo "<div class='col-lg-4' id='div-col'><label id=\"label-open\"> Area geografica:</label> ". $row['area']. "</div>";
+                        echo "<div class='col-lg-4' id='div-col'><label id=\"label-open\"> Autore:</label> ". $row['nome'].' '. $row['cognome']."</div>";
+                        echo "</div>";
+                        //echo "</p>";
+                        echo "<div id='div-open' style='padding-left: 94px;'>";
                         echo "<div style=\"display: none\" id=\"tab_$counter\">";
-                        echo "<p>Descrizione: ". $row['descrizione'] ."</p>";
-                        echo "<p>Note: ". $row['note'] ."</p>";
-                        echo "<p>Ora inizio: ". $row['ora_inizio'] ."</p>";
-                        echo "<p>Ora fine: ". $row['ora_fine'] ."</p>";
+                        echo "<p><label id=\"label-open\">Descrizione:</label> ". $row['descrizione'] ."</p>";
+                        echo "<p><label id=\"label-open\">Note:</label> ". $row['note'] ."</p>";
+                        echo "<p><label id=\"label-open\">Ora inizio:</label> ". $row['ora_inizio'] ."</p>";
+                        echo "<p><label id=\"label-open\">Ora fine:</label> ". $row['ora_fine'] ."</p>";
+                        echo "<p><label id=\"label-open\">Immagine:</label> ";
                         if (file_exists($row['immagine'])) {
                             echo "<a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a>";
                         } else {
                             echo "<img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>";
                         }
                         echo "</p>";
-                        echo "<p>Oggetto celeste: ". $row['oggetto'] ."</p>";
-                        echo "<p>Strumento: ". $row['strumento'] ."</p>";
-                        echo "<p>Oculare: ". $row['oculare'] ."</p>";
-                        echo "<p>Filtro: ". $row['filtro'] ."</p>";
-                        echo "<p>Categoria: ". $row['categoria'] ."</p>";
+                        echo "<p><label id=\"label-open\">Oggetto celeste:</label> ". $row['oggetto'] ."</p>";
+                        echo "<p><label id=\"label-open\">Strumento:</label> ". $row['strumento'] ."</p>";
+                        echo "<p><label id=\"label-open\">Oculare:</label> ". $row['oculare'] ."</p>";
+                        echo "<p><label id=\"label-open\">Filtro:</label> ". $row['filtro'] ."</p>";
+                        echo "<p><label id=\"label-open\">Categoria:</label> ". $row['categoria'] ."</p>";
                         // echo "<p>Area geografica: ". $row['area'] ."</p>";
                         // echo "<p>Autore: ". $row['nome'].' '. $row['cognome'] ."</p>";
+                        echo "<br>";
+                        echo "</div>";
+
+                        echo "</div>";
                         echo "</div>";
                         $counter = $counter + 1;
                     }
@@ -180,7 +194,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 ?>
          <!--</table>-->
          <br>
-          <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
+
          </div>
 
         <?php

@@ -42,7 +42,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         if (isset($_POST["invio_ricerca"]) || isset($_POST["invio_ricerca2"])) {
         ?>
         <div class="featured-heading">
-                <h1>Oggetti celesti osservati</h1>
+                <h1>Osservazioni per oggetto celeste selezionato</h1>
                 <div id ="contact-info-ricerca" class="contact-info">
               <div id="panel-body-ricerca" class="panel-body">
                  <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
@@ -78,7 +78,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 <table class="table">
                     <thead class="thead-default">
                     <tr>
-                      <th></th>
+                      <th>Osservazioni</th>
                       <th>Stato</th>
                         <!--<th>Osservazione</th>
                         <th>Ora inizio</th>
@@ -187,7 +187,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                       {
                              echo "<h3 style='color:#d3b483;'>Nessun risultato ottenuto  per '".$valore."'</h3><br>";
                         }?>
-                 <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
+
         </div>
             <?php
         }
@@ -227,7 +227,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             }
             ?>
 
-            <label>Tipo oggetto &nbsp;&nbsp; </label><select id="soflow-color" name="tipo_oggetto" onchange="fetch_select(this.value);">
+            <label style="color: white">Tipo oggetto &nbsp;&nbsp; </label><select id="soflow-color" name="tipo_oggetto" onchange="fetch_select(this.value);">
                 <option value="">Selezionare tipo</option>
                 <?php
                 $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
@@ -250,7 +250,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             </select>
                 <br>
 
-            <label>Oggetto celeste &nbsp;&nbsp;</label><select id="soflow-color" name="id_oggetto">
+            <label style="color: white">Oggetto celeste &nbsp;&nbsp;</label><select id="soflow-color" name="id_oggetto">
                 <option value="">Selezionare prima il tipo</option>
             </select>
             <br>

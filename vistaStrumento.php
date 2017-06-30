@@ -39,84 +39,54 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         ?>
         <div class="featured-heading">
             <h1>Caratteristiche strumento</h1><br>
-            <table class="table" >
-                <tbody>
-                 <tr>
-                   <th id="verticaltable">Nome</th>
-                     <?php echo "<td id='verticaltable'>". $nome ."</td>"; ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Tipo</th>
-                     <?php echo "<td id='verticaltable'>". $tipo ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Marca</th>
-                     <?php echo "<td id='verticaltable'>". $marca ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Campo focale</th>
-                     <?php echo "<td id='verticaltable'>". $campoFocale ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Ingrandimenti</th>
-                     <?php echo "<td id='verticaltable'>". $ingrandimenti ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Lunghezza focale</th>
-                     <?php echo "<td id='verticaltable'>". $lunghezzaFocale ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Montatura</th>
-                     <?php echo "<td id='verticaltable'>". $montatura ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Focal ratio</th>
-                     <?php echo "<td id='verticaltable'>". $focalRatio ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Campo cercatore</th>
-                     <?php echo "<td id='verticaltable'>". $campoCercatore ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Tipo telescopio</th>
-                     <?php echo "<td id='verticaltable'>". $tipoTelescopio ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Apertura in millimetri</th>
-                     <?php echo "<td id='verticaltable'>". $aperturaMM ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Apertura in pollici</th>
-                     <?php echo "<td id='verticaltable'>". $aperturaPollici ."</td>";
-                     ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Risoluzione angolare</th>
-                     <?php  echo "<td id='verticaltable'>". $risoluzioneAngolare ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Stima potere risolutivo</th>
-                     <?php echo "<td id='verticaltable'>". $stimaPotereRisolutivo ."</td>";
-                      ?>
-                 </tr>
-                 <tr>
-                   <th id="verticaltable">Note</th>
-                     <?php echo "<td id='verticaltable'>". $note ."</td>"; ?>
-                 </tr>
-               </tbody>
 
-           </table>
+            <div id='div-open' style='padding-left: 140px;'>
+                <?php echo "<p style='padding-left: 15px;'><label id=\"label-open\">Nome:</label>". $nome ."</p>"; ?>
+                <div class='col-lg-6 col-md-6 col-sm-12'>
+
+                     <?php echo "<p><label id=\"label-open\">Tipo:</label>". $tipo ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Marca:</label>". $marca ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Campo focale:</label>". $campoFocale ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Ingrandimenti:</label>". $ingrandimenti ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Lunghezza focale:</label>". $lunghezzaFocale ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Monatatura:</label>". $montatura ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Focal ratio:</label>". $focalRatio ."</p>";
+                      ?>
+                 </div>
+                <div class='col-lg-6 col-md-6 col-sm-12'>
+                     <?php echo "<p><label id=\"label-open\">Campo cercatore:</label>". $campoCercatore ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Tipo telescopio:</label>". $tipoTelescopio ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Apertura in millimetri:</label>". $aperturaMM ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Apertura in pollici:</label>". $aperturaPollici ."</p>";
+                     ?>
+
+                     <?php  echo "<p><label id=\"label-open\">Risoluzione angolare:</label>". $risoluzioneAngolare ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Stima potere risolutivo:</label>". $stimaPotereRisolutivo ."</p>";
+                      ?>
+
+                     <?php echo "<p><label id=\"label-open\">Note:</label>". $note ."</p>"; ?>
+                </div>
+             </div>
          </div>
         <?php
 } else {
@@ -133,4 +103,4 @@ echo "</div>";
 echo "</div>";
 
 include("footer.php");
-?>
+?>

@@ -57,20 +57,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
         $cognomeUtente = $row['cognome'];
         ?>
         <div class="featured-heading">
-             <h1>Dettagli osservazione</h1><br>
-            <table class="table">
-                <thead class="thead-default">
-                 <tr>
-                   <th>Categoria</th>
-                   <th>Trasparenza</th>
-                   <th>Seeing (Antoniani)</th>
-                   <th>Seeing (pickering)</th>
-                   <th>Area geografica</th>
-                   <th>Utente</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
+                <h1>Dettagli osservazione</h1><br>
                 <?php
                 /*
                 Hm, effettivamente sto usando variabili che non hanno subito modifiche e potrei usare direttamente
@@ -78,19 +65,27 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 tipo del telescopio se si tratta di un altro tipo di strumento)
                 C'erano anche delle formule da calcolare
                 */
-                echo "<td>". $categoria ."</td>";
-                echo "<td>". $trasparenza ."</td>";
-                echo "<td>". $seeingAntoniani ."</td>";
-                echo "<td>". $seeingPickering ."</td>";
-                echo "<td>". $nomeAreaGeografica ."</td>";
-                echo "<td>". $nomeUtente ." ". $cognomeUtente ."</td>";
+                echo "<div style='text-align: justify;'>";
+                echo "<div class='row' style='padding-left: 225px;'>";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Categoria:</label>". $categoria ."</p></div> ";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Trasparenza:</label>". $trasparenza ."</p></div> ";
+                echo "</div>";
+                echo "<div class='row' style='padding-left: 225px;'>";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Seeing (Antoniani):</label>". $seeingAntoniani ."</p></div> ";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Seeing (Pickering): </label>". $seeingPickering ."</p></div> ";
+                echo "</div>";
+                echo "<div class='row' style='padding-left: 225px;'>";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Area geografica:</label>". $nomeAreaGeografica ."</p></div> ";
+                echo "<div class='col-lg-6 col-md-6 col-sm-12'><p><label id=\"label-open\">Utente:</label>". $nomeUtente ." ". $cognomeUtente ."</p></div> ";
+                echo "</div>";
+                echo "</div>";
                 ?>
-                </tr>
-              </tbody>
-            </table>
+
             <br>
+
             <h2 id="titolo2">Oggetti osservati</h2>
             <br>
+
             <!--<table class="table">
                 <thead class="thead-default">
                 <tr>
@@ -122,27 +117,38 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $row_count = $stmt->rowCount();
                 if ($row_count > 0) {
                     $counter = 1;
+
                     foreach ($rows as $row) {
-                        echo "<p><img src=\"http://lorempixel.com/40/40/cats/\" id=\"icon_$counter\" onclick=\"toggleTab(this)\" />";
-                        echo $row['nomeOggettoceleste'];
+                        echo "<div class='col-lg-2'></div>";
+                        echo "<div class='col-lg-10'>";
+                        echo "<p id='p-open' style=' padding-left: 40px;'>";
+                        //echo "<p id='p-open'>";
+                        echo "<a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a>";
+                        echo "<label id=\"label-open\">Oggetto celeste:</label> ". $row['nomeOggettoceleste'];
                         echo "</p>";
+                        echo "<div id='div-open' style='padding-left: 89px;'>";
+                        //echo "<div id='div-open'>";
                         echo "<div style=\"display: none\" id=\"tab_$counter\">";
-                        echo "<p>Stato: ". $row['stato'] ."</p>";
-                        echo "<p>Rating: ". $row['rating'] ."</p>";
-                        echo "<p>Descrizione: ". $row['descrizione'] ."</p>";
-                        echo "<p>Immagine: ";
+                        echo "<p><label id=\"label-open\">Stato:</label>". $row['stato'] ."</p>";
+                        echo "<p><label id=\"label-open\">Rating:</label> ". $row['rating'] ."</p>";
+                        echo "<p><label id=\"label-open\">Descrizione:</label> ". $row['descrizione'] ."</p>";
+                        echo "<p><label id=\"label-open\">Immagine:</label> ";
                         if (file_exists($row['immagine'])) {
                             echo "<a href=\"". $row['immagine'] ."\"> <img src=\"" .$row['immagine']."\" width=\"70\" height= \"50\"/>"." </a>";
                         } else {
                             echo "<img src=\"immagini/noimagefound.jpg\" width=\"70\" height= \"50\"/>";
                         }
                         echo "</p>";
-                        echo "<p>Note: ". $row['note'] ."</p>";
-                        echo "<p>Ora inizio: ". $row['ora_inizio'] ."</p>";
-                        echo "<p>Ora fine: ". $row['ora_fine'] ."</p>";
-                        echo "<p>Strumento: ". $row['nomeStrumento'] ."</p>";
-                        echo "<p>Oculare: ". $row['nomeOculare'] ."</p>";
-                        echo "<p>Filtro: ". $row['nomeFiltro'] ."</p>";
+                        echo "<p><label id=\"label-open\">Note:</label> ". $row['note'] ."</p>";
+                        echo "<p><label id=\"label-open\">Ora inizio:</label> ". $row['ora_inizio'] ."</p>";
+                        echo "<p><label id=\"label-open\">Ora fine:</label> ". $row['ora_fine'] ."</p>";
+                        echo "<p><label id=\"label-open\">Strumento:</label> ". $row['nomeStrumento'] ."</p>";
+                        echo "<p><label id=\"label-open\">Oculare:</label> ". $row['nomeOculare'] ."</p>";
+                        echo "<p><label id=\"label-open\">Filtro:</label> ". $row['nomeFiltro'] ."</p>";
+                        echo "<br>";
+                        echo "</div>";
+
+                        echo "</div>";
                         echo "</div>";
                         $counter = $counter + 1;
                     }
@@ -170,6 +176,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 }
                 ?>
             <!--</table> -->
+
             <br>
             <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
            </div>

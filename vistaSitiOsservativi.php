@@ -1,5 +1,18 @@
 <head>
     <title>Vista siti osservativi</title>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script>
+        function printPage() {
+            window.print();
+        }
+
+        function toggleTab(elem) {
+            var id = $(elem).attr("id");
+            var number = id.split("_")[1];
+            var selected = "tab_" + number;
+            $('#' + selected).toggle();
+        }
+    </script>
 </head>
 <?php
 session_start();
@@ -44,19 +57,8 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                     </div>
                 </form>                
                 </div>
+            </div>
         <br>
-        <table class="table">
-            <thead class="thead-default">
-                <tr>
-                    <th>Nome</th>
-                    <th>Latitudine</th>
-                    <th>Longitudine</th>
-                    <th>Altitudine</th>
-                    <th>Qualit&agrave; del cielo: Bortle</th>
-                    <th>Qualit&agrave; del cielo: SQM</th>
-                    <th>Note</th>
-                </tr>
-            </thead>
             <?php
             $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
 
@@ -81,23 +83,37 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
             $row_count = $stmt->rowCount();
 
             if ($row_count > 0) {
-                echo "<tbody>";
+                $counter=1;
                 foreach ($rows as $row) {
-                    echo "<tr>";
                     # Devo passare l'ID per pescarlo come GET nell'altra pagina, può dare problemi?
-                    echo "<td>". $row['nome'] ."</td>";
-                    echo "<td>". $row['latitudine'] ."</td>";
-                    echo "<td>". $row['longitudine'] ."</td>";
-                    echo "<td>". $row['altitudine'] ."</td>";                  	
-                  	echo "<td style='text-align: center;'>". $row['qualita_cielo_bortle']."</td>";
-                    echo "<td style='text-align: center;'>". $row['qualita_cielo_sqm']."</td>";
-                    echo "<td>". $row['note'] ."</td>";
-                    echo "</tr>";
+                    echo "<div class='col-lg-4'></div>";
+                    echo "<div class='col-lg-8'>";
+                    echo "<p id='p-open' style=' padding-left: 40px;'>";
+                    //echo "<p id='p-open'>";
+                    echo "<a class='btn btn-default' id=\"icon_$counter\" onclick=\"toggleTab(this)\" style='margin-bottom: 2px; margin-left: 6px; margin-right: 6px;'><em class='fa fa-eye'></em></a>";
+                    echo "<label id=\"label-open\">Nome:</label> ". $row['nome'];
+                    echo "</p>";
+                    echo "<div id='div-open' style='padding-left: 89px;'>";
+                    //echo "<div id='div-open'>";
+                    echo "<div style=\"display: none\" id=\"tab_$counter\">";
+
+                    echo "<p><label id=\"label-open\">Latitudine:</label>". $row['latitudine'] ."</p>";
+                    echo "<p><label id=\"label-open\">Longitudine:</label>". $row['longitudine'] ."</p>";
+                    echo "<p><label id=\"label-open\">Altitudine:</label>". $row['altitudine'] ."</p>";
+                    echo "<p><label id=\"label-open\">Qualit&agrave; del cielo Bortle:</label>". $row['qualita_cielo_bortle']."</p>";
+                    echo "<p><label id=\"label-open\">Qualit&agrave; del cielo SQM:</label>". $row['qualita_cielo_sqm']."</p>";
+                    echo "<p><label id=\"label-open\">Note:</label>". $row['note'] ."</p>";
+                    echo "<br>";
+                    echo "</div>";
+
+                    echo "</div>";
+                    echo "</div>";
+                    $counter = $counter + 1;
                 }
-                echo "</tbody>";
+
             }
             ?>
-        </table>
+
         <?php
          if($row_count <= 0 && $ricerca)
                       {  

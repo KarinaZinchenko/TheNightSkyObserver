@@ -85,7 +85,6 @@ var tipo = "<?php echo $_SESSION["tipo"]; ?>";
                         "<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Membri</a>"+
                         "<ul class='dropdown-menu'>"
                             +"<li><a href='vistaSoci.php'>Vista membri</a></li>"
-                            +"<li><a href='vistaSociInsolventi.php'>Vista membri insolventi</a></li>"
                             +"<li><a href='inserisciUtente.php'>Inserisci nuovo membro</a></li>"
                             +"<li><a href='modificaEliminaUtente.php'>Modifica/Elimina info membri</a></li>"
                         +"</ul>"
