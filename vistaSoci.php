@@ -105,7 +105,7 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                             echo "<div class='col-lg-3' id='div-col'><label id=\"label-open\"> Tipo:</label> " . $row['tipo'] . "</div>";
                         }
                         echo "</div>";
-                        echo "<div id='div-open' style='padding-left: 310px;'>";
+                        echo "<div id='div-open' style='padding-left: 240px;'>";
                         echo "<div style=\"display: none\" id=\"tab_$counter\">";
                         echo "<p><label id=\"label-open\"> Numero socio:</label> ". $row['numero_socio']."</p>";
                         echo "<p><label id=\"label-open\"> Data di nascita:</label> ". $row['data_nascita']."</p>";
