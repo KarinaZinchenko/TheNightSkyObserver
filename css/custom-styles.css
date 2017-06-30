@@ -67,7 +67,7 @@ h4{}
 h5{}
 h6{}
 p{color: #5d5d5d; font-size: 14px; line-height: 22px; font-family: 'source_sans_proregular';
-    padding-bottom: 15px; }
+    }
 .no-border-right{border-right: none !important;}
 .icon{color: #c2a270;
     font-size: 10px;
@@ -425,4 +425,22 @@ input[type="file"] {
 
 #label-ricerca {
 	color: #d3b483 !important;
+}
+
+#label-open {
+    color: #ffffff !important;
+    margin-right: 4px;
+}
+
+#div-open{
+    text-align: justify;
+}
+
+#p-open{
+    text-align: left;
+}
+
+#div-col{
+    padding: 8px 0px 10px 0px !important;
+    vertical-align: middle;
 }
