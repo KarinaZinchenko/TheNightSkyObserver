@@ -21,8 +21,8 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
          switch($_POST["scelta_operazione"])
          {
             case "modifica":
-             if ($_REQUEST["nome"] != "" && $_REQUEST["cognome"] != "" && $_REQUEST["username"] != "" && $_REQUEST["password"] != "" && $_REQUEST["tipo_utente"] != "" && $_REQUEST["data_scadenza_tessera"] != "" && $_REQUEST["data_nascita"] != ""){
-                 $sql="UPDATE anagrafica SET nome='".$_POST["nome"]."',cognome='".$_POST["cognome"]."',username='".$_POST["username"]."',password='".$password."',tipo='".$_POST["tipo_utente"]."',scadenza_tessera='".$_POST["data_scadenza_tessera"]."',data_nascita='".$_POST["data_nascita"]."' WHERE numero_socio=".$_POST["id_utente"].";";
+             if ($_REQUEST["nome"] != "" && $_REQUEST["cognome"] != "" && $_REQUEST["username"] != "" && $_REQUEST["password"] != "" && $_REQUEST["tipo_utente"] != "" && $_REQUEST["scadenza_tessera"] != "" && $_REQUEST["data_nascita"] != ""){
+                 $sql="UPDATE anagrafica SET nome='".$_POST["nome"]."',cognome='".$_POST["cognome"]."',username='".$_POST["username"]."',password='".$password."',tipo='".$_POST["tipo_utente"]."',scadenza_tessera='".$_POST["scadenza_tessera"]."',data_nascita='".$_POST["data_nascita"]."' WHERE numero_socio=".$_POST["id_utente"].";";
                 }else{  ?>
                 <script>
                     swal({title:"Attenzione!",text:"Tutti i campi obbligatori, contrassegnati da *, devono essere inseriti.",type:"warning",showConfirmButton:false});

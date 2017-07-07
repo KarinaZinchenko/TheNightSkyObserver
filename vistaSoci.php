@@ -89,10 +89,17 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 if ($row_count > 0) {
                     $counter = 1;
                     foreach ($rows as $row) {
-                        if ($row['tipo'] != "amministratore" && strtotime($row['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
-                            $stmt = $conn->prepare("UPDATE anagrafica SET tipo='insolvente' WHERE numero_socio=".$row['numero_socio'].";");
-                            $result = $stmt->execute();
-                            $row['tipo']="insolvente";
+                        if ($row['tipo'] != "amministratore"){
+                        	if(strtotime($row['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
+                                $stmt = $conn->prepare("UPDATE anagrafica SET tipo='insolvente' WHERE numero_socio=".$row['numero_socio'].";");
+                                $result = $stmt->execute();
+                                $row['tipo']="insolvente";
+                            }
+                            else{
+                            	$stmt = $conn->prepare("UPDATE anagrafica SET tipo='regolare' WHERE numero_socio=".$row['numero_socio'].";");
+                              	$result = $stmt->execute();
+                              	$row['tipo']="regolare";
+                            }                            
                         }
 
                         echo "<div id='p-open' class='col-lg-12'>";
