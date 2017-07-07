@@ -68,13 +68,25 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
                      $regolare="";
                      $amministratore="";
                      $insolvente="";
-                     if ($tupla['tipo'] != "amministratore" && strtotime($tupla['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
+                     /*if ($tupla['tipo'] != "amministratore" && strtotime($tupla['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
                          $stmt = $conn->prepare("UPDATE anagrafica SET tipo='insolvente' WHERE numero_socio=".$tupla['numero_socio'].";");
                          $result = $stmt->execute();
                          $tupla['tipo']="insolvente";
                      }
-                     if($tupla['tipo']=="regolare")
-                     {$regolare='selected="selected"';}
+                     */
+                     if($tupla['tipo']=="regolare"){
+                       if(strtotime($tupla['scadenza_tessera']) < strtotime(date("Y-m-d"))) {
+                           $conn = new PDO('mysql:host=localhost; dbname=my_teamzatopek; charset=utf8', 'root', '');
+                           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                           $stmt = $conn->prepare("UPDATE anagrafica SET tipo='insolvente' WHERE numero_socio=".$tupla['numero_socio'].";");
+                           $result = $stmt->execute();
+                           $tupla['tipo']="insolvente";
+                           $insolvente='selected="selected"';
+                       }
+                     	else{
+                        	$regolare='selected="selected"';
+                        }
+                     }
                      elseif ($tupla["tipo"]=="amministratore"){$amministratore='selected="selected"';}
                      	else{$insolvente='selected="selected"';}
                      ?>
