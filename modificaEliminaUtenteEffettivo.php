@@ -40,7 +40,7 @@ if(isset($_SESSION["autenticato"])&& isset($_SESSION["tipo"]))
                             break;
            case "riattiva tessera":
            					$scadenza=$_POST["scadenza_tessera"];
-           					$nuova_scadenza=date('Y-m-d',strtotime($scadenza . " + 365 day"));
+           					$nuova_scadenza=date('Y-m-d',strtotime(date('Y-m-d') . " + 365 day"));
                             //echo "<script>console.log('".$scadenza."');</script>";
                             //echo "<script>console.log('".$nuova_scadenza."');</script>";                            
                               if($_POST["tipo_utente"]=="amministratore"){                            
