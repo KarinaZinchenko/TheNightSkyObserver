@@ -26,20 +26,20 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                          <label>Nome *</label><input type="text" name="nome">
                      </div>
                      <div class="col-xs-6 col-sm-3 col-md-3 form-group">
-                         <label>Altitudine *</label><input type="number" name="altitudine">
+                         <label>Altitudine *</label><input type="number" step=any name="altitudine">
                      </div>
                      <div class="col-xs-6 col-sm-3 col-md-3 form-group">
-                         <label>Latitudine *</label><input type="number" name="latitudine">
+                         <label>Latitudine *</label><input type="number" step=any name="latitudine">
                      </div>
                      <div class="col-xs-6 col-sm-3 col-md-3 form-group">
-                         <label>Longitudine *</label><input type="number" name="longitudine">
+                         <label>Longitudine *</label><input type="number" step=any name="longitudine">
                      </div>
 
                      <div class="col-xs-6 col-sm-4 col-md-4 form-group">
-                         <label>Qualit&agrave; cielo (Bortle)</label><input type="number" name="bortle">
+                         <label>Qualit&agrave; cielo (Bortle)</label><input type="number" step=any name="bortle">
                      </div>
                      <div class="col-xs-6 col-sm-4 col-md-4 form-group">
-                         <label>Qualit&agrave; cielo (SQM)</label><input type="number" name="sqm">
+                         <label>Qualit&agrave; cielo (SQM)</label><input type="number" step=any name="sqm">
                      </div>
                      <div class="col-xs-12 col-sm-4 col-md-4 form-group">
                          <label>Note</label><textarea name="note"></textarea>
@@ -65,6 +65,22 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 $bortle = $_REQUEST["bortle"];
                 $sqm = $_REQUEST["sqm"];
 
+                //query per verificare che il sito osservativo non sia gia presente nel sistema
+                $ok=true;
+                $sql="SELECT altitudine,latitudine,longitudine FROM areageografica;";
+                $risposta=mysqli_query($conn,$sql)or die("Errore nella query: " . $sql . "\n" . mysqli_error($conn));
+               if(mysqli_num_rows($risposta)!=0)
+             {
+                  while ($tupla = mysqli_fetch_array($risposta))
+                       { 
+                         if($tupla["altitudine"]==$altitudine && $tupla["latitudine"]==$latitudine && $tupla["longitudine"]==$longitudine)
+                         {
+                             $ok=false;
+                         }
+                       }
+             }
+          if($ok)
+          {
                 $nome = nl2br(htmlentities($nome, ENT_QUOTES, 'UTF-8'));
                 $note = nl2br(htmlentities($note, ENT_QUOTES, 'UTF-8'));
                 $altitudine = nl2br(htmlentities($altitudine, ENT_QUOTES, 'UTF-8'));
@@ -114,6 +130,16 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 }
                 $conn = null;
                 $stmt = null;
+            }// choudo if perverificare che quello che sto inserendo non sia gia presente
+            else
+            {
+                ?>
+                <script>
+                    swal({title:"Attenzione!",text:"L'area inserita esiste già",type:"warning",showConfirmButton:false});
+                </script>
+                <?php
+                header("Refresh:3; url=inserisciArea.php", true, 303);
+            }
 
             } else { //chiudo if per verificare che i campi siano stati inseriti
                     ?>
@@ -181,4 +207,5 @@ function conversionToBortle ($sqm){
         return 9;
     }
 }
-?>
+?>
+
