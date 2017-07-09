@@ -177,8 +177,6 @@ if (isset($_SESSION["autenticato"]) && isset($_SESSION["tipo"])) {
                 ?>
             <!--</table> -->
 
-            <br>
-            <input id="contact-submit" class="btn" type="submit" value="Stampa" onclick="printPage()">
            </div>
 
         <?php
