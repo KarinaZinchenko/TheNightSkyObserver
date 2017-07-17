@@ -444,3 +444,9 @@ input[type="file"] {
     padding: 8px 0px 10px 0px !important;
     vertical-align: middle;
 }
+
+#info{
+  font-size:24px !important;
+  padding-left:0 !important;
+  padding-right:0 !important;
+}
